@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/client" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/ConsoleOutputLogWriter.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/GenericLogEvent.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/HttpServletSessionContext.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/Log4J2LogWriter.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/LogEvent.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/LogEventConfig.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/LogHttpFilter.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/LogWriter.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/Logger.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/RequestContext.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/Scope.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/ScopeStack.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/SessionContext.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/SimpleSessionContext.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/client/src/main/java/de/byteagenten/ldr2/ThrowableWrapper.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/examples" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/examples/basics" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/examples/scopes" charset="UTF-8" />
+  </component>
+</project>

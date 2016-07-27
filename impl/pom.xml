@@ -1,0 +1,106 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>ldr2</name>
+    <artifactId>all</artifactId>
+    <version>2.0.0</version>
+    <groupId>de.byteagenten.ldr2</groupId>
+    <packaging>pom</packaging>
+
+    <organization>
+        <name>byteAgenten gmbh</name>
+        <url>http://www.byteagenten.de</url>
+    </organization>
+
+    <modules>
+
+        <module>client</module>
+        <module>examples</module>
+    </modules>
+
+    <build>
+          <plugins>
+         
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+    </build>
+
+    <properties>
+        <version.log4j>1.2.17</version.log4j>
+        <version.slf4j.log4j12>1.7.21</version.slf4j.log4j12>
+        <version.junit>4.12</version.junit>
+   </properties>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>dev</env>
+            </properties>
+        </profile>
+    </profiles>
+
+    <repositories>
+        <!--
+        <repository>
+            <id>central</id>
+            <name>Central</name>
+            <url>http://md1ffksc.ww009.siemens.net:8081/nexus/content/repositories/central/</url>
+        </repository>
+        <repository>
+            <id>byteagenten-nexus</id>
+            <name>byteagenten nexus</name>
+            <url>http://md1ffksc.ww009.siemens.net:8081/nexus/content/repositories/simonigence/</url>
+        </repository>
+        <repository>
+            <id>smartbear</id>
+            <name>smartbear repo</name>
+            <url>http://md1ffksc.ww009.siemens.net:8081/nexus/content/repositories/smartbear/</url>
+        </repository>
+        -->
+    </repositories>
+    <pluginRepositories>
+        <!--
+        <pluginRepository>
+            <id>central</id>
+            <name>Central</name>
+            <url>http://md1ffksc.ww009.siemens.net:8081/nexus/content/repositories/central/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>byteagenten-nexus</id>
+            <name>byteagenten nexus</name>
+            <url>http://md1ffksc.ww009.siemens.net:8081/nexus/content/repositories/simonigence/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>smartbear</id>
+            <name>smartbear repo</name>
+            <url>http://md1ffksc.ww009.siemens.net:8081/nexus/content/repositories/smartbear/</url>
+        </pluginRepository>
+        -->
+    </pluginRepositories>
+    <distributionManagement>
+        <!--
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://md1ffksc.ww009.siemens.net:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>releases</id>
+            <url>http://md1ffksc.ww009.siemens.net:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        -->
+    </distributionManagement>
+</project>
