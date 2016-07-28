@@ -12,6 +12,7 @@ public class BasicExample {
 
         Logger.init("myApp", ConsoleOutputLogWriter.class);
 
+        //Most simple log call!
         Logger.log();
 
         Logger.log(null);
