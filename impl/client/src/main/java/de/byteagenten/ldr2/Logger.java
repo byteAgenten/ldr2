@@ -6,11 +6,10 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Created by knooma2e on 21.07.2016.
@@ -78,41 +77,61 @@ public class Logger {
         return scopeStack.get().createChild();
     }
 
+    public static void log(String message, LogEvent.Level logLevel) {
+
+        LogEventConfig logEventConfig = LogEventConfig.create();
+        logEventConfig.setLevel(logLevel);
+        log(message, logEventConfig);
+    }
+
+    public static void log() {
+        log(null);
+    }
+
     public static void log(Object evt) {
         log(evt, null);
     }
 
-    public static void log(Object evt, LogEventConfig specificLogEventConfig) {
+
+    public static void log(Object inEvent, LogEventConfig specificLogEventConfig) {
 
         if (Logger.applicationId == null)
             throw new IllegalStateException("Logger not initialized. Please call Logger.init() first.");
 
-        if (evt instanceof Class) {
+        if (inEvent == null) inEvent = new NullLog();
+
+        if (inEvent instanceof Class) {
 
             try {
-                Constructor constructor = ((Class) evt).getConstructor();
-                evt = constructor.newInstance();
+                Constructor constructor = ((Class) inEvent).getConstructor();
+                inEvent = constructor.newInstance();
             } catch (Exception e) {
                 return;
             }
-        } else if (evt instanceof Throwable) {
+        } else if (inEvent instanceof Throwable) {
 
-            evt = new ThrowableWrapper((Throwable) evt);
+            inEvent = new ExceptionLog((Throwable) inEvent);
+
+        } else if (inEvent instanceof String) {
+
+            inEvent = new SimpleTextLog((String) inEvent);
         }
 
-        final Object event = evt;
 
-        LogEvent logEvent = event.getClass().getAnnotation(LogEvent.class);
+        final Object event = inEvent;
+
+        LogEvent logEvent = event != null ? event.getClass().getAnnotation(LogEvent.class) : null;
         LogEventConfig logEventConfig = LogEventConfig.fromLogEvent(logEvent);
         logEventConfig.merge(specificLogEventConfig);
 
-        if (logEventConfig.getName().length() == 0) logEventConfig.setName(event.getClass().getName());
+        if (logEventConfig.getName().length() == 0)
+            logEventConfig.setName(event != null ? event.getClass().getName() : "unknown");
 
 
         GenericLogEvent genericLogEvent = GenericLogEvent.create(
                 Logger.applicationId,
                 logEventConfig.getName(),
-                event.getClass(),
+                event != null ? event.getClass() : null,
                 logEventConfig.getLevel());
 
 
@@ -141,7 +160,7 @@ public class Logger {
 
         if (logEventConfig.getMessage() != null && logEventConfig.getMessage().length() > 0) {
 
-            jsonObject.addProperty(MESSAGE, logEventConfig.getMessage());
+            jsonObject.addProperty(MESSAGE, buildMessage(event, logEventConfig.getMessage()));
         }
 
 
@@ -151,60 +170,111 @@ public class Logger {
         });
 
         try {
-            Arrays.asList(Introspector.getBeanInfo(event.getClass())
-                    .getPropertyDescriptors()).stream()
-                    .filter(pd -> {
-                        return pd.getReadMethod() != null && !pd.getReadMethod().getName().contains("getClass");
-                    }).forEach(pd -> {
-                try {
+            if (event != null) {
 
-                    Class<?> pt = pd.getReadMethod().getReturnType();
+                Arrays.asList(Introspector.getBeanInfo(event.getClass())
+                        .getPropertyDescriptors()).stream()
+                        .filter(pd -> {
+                            return pd.getReadMethod() != null && !pd.getReadMethod().getName().contains("getClass");
+                        }).forEach(pd -> {
+                    try {
 
-                    if (pt.isAssignableFrom(String.class)) {
+                        Class<?> pt = pd.getReadMethod().getReturnType();
 
-                        jsonObject.addProperty(pd.getName(), (String) pd.getReadMethod().invoke(event));
+                        if (pt.isAssignableFrom(String.class)) {
 
-                    } else if (pt.isAssignableFrom(Long.class) || (pt.isPrimitive() && (pt == Long.TYPE))) {
+                            jsonObject.addProperty(pd.getName(), (String) pd.getReadMethod().invoke(event));
 
-                        jsonObject.addProperty(pd.getName(), (Long) pd.getReadMethod().invoke(event));
+                        } else if (pt.isAssignableFrom(Long.class) || (pt.isPrimitive() && (pt == Long.TYPE))) {
 
-                    } else if (pt.isAssignableFrom(Integer.class) || (pt.isPrimitive() && pt == Integer.TYPE)) {
+                            jsonObject.addProperty(pd.getName(), (Long) pd.getReadMethod().invoke(event));
 
-                        jsonObject.addProperty(pd.getName(), (Integer) pd.getReadMethod().invoke(event));
+                        } else if (pt.isAssignableFrom(Integer.class) || (pt.isPrimitive() && pt == Integer.TYPE)) {
 
-                    } else if (pt.isAssignableFrom(Double.class) || (pt.isPrimitive() && pt == Double.TYPE)) {
+                            jsonObject.addProperty(pd.getName(), (Integer) pd.getReadMethod().invoke(event));
 
-                        jsonObject.addProperty(pd.getName(), (Double) pd.getReadMethod().invoke(event));
+                        } else if (pt.isAssignableFrom(Double.class) || (pt.isPrimitive() && pt == Double.TYPE)) {
 
-                    } else if (pt.isAssignableFrom(Float.class) || (pt.isPrimitive() && pt == Float.TYPE)) {
+                            jsonObject.addProperty(pd.getName(), (Double) pd.getReadMethod().invoke(event));
 
-                        jsonObject.addProperty(pd.getName(), (Float) pd.getReadMethod().invoke(event));
+                        } else if (pt.isAssignableFrom(Float.class) || (pt.isPrimitive() && pt == Float.TYPE)) {
 
-                    } else if (pt.isAssignableFrom(Date.class)) {
+                            jsonObject.addProperty(pd.getName(), (Float) pd.getReadMethod().invoke(event));
+
+                        } else if (pt.isAssignableFrom(Date.class)) {
 
 
-                        Date value = (Date) pd.getReadMethod().invoke(event);
-                        jsonObject.addProperty(pd.getName(), value != null ? df.format(value) : null);
+                            Date value = (Date) pd.getReadMethod().invoke(event);
+                            jsonObject.addProperty(pd.getName(), value != null ? df.format(value) : null);
 
-                    } else if (pt.isAssignableFrom(Boolean.class) || (pt.isPrimitive() && pt == Boolean.TYPE)) {
+                        } else if (pt.isAssignableFrom(Boolean.class) || (pt.isPrimitive() && pt == Boolean.TYPE)) {
 
-                        jsonObject.addProperty(pd.getName(), (Boolean) pd.getReadMethod().invoke(event));
+                            jsonObject.addProperty(pd.getName(), (Boolean) pd.getReadMethod().invoke(event));
 
-                    } else if (pt.isAssignableFrom(Throwable.class)) {
+                        } else if (pt.isAssignableFrom(Throwable.class)) {
 
-                        jsonObject.addProperty(pd.getName(), ((Throwable) pd.getReadMethod().invoke(event)).toString());
+                            jsonObject.addProperty(pd.getName(), ((Throwable) pd.getReadMethod().invoke(event)).toString());
+                        }
+
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
                     }
-
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            });
+                });
+            }
 
             if (Logger.logWriter != null) Logger.logWriter.write(genericLogEvent);
 
         } catch (IntrospectionException e) {
             e.printStackTrace();
         }
+    }
+
+    private static String buildMessage(Object event, String message) {
+
+        if (event == null || message == null || message.trim().length() == 0) return message;
+        if (!message.contains("{")) return message;
+
+        List<String> placeholders = new ArrayList<>();
+
+        StringBuilder sb = new StringBuilder();
+
+        boolean in = false;
+
+        for (char c : message.toCharArray()) {
+            if (!in && c == '{') {
+                in = true;
+                continue;
+            }
+            if (in) {
+                if (c == '}') {
+                    in = false;
+                    placeholders.add(sb.toString());
+                    sb = new StringBuilder();
+                    continue;
+                }
+                sb.append(c);
+            }
+        }
+
+        for (String placeholder : placeholders) {
+
+            String firstChar = placeholder.substring(0, 1);
+            String getterName = "get" + firstChar.toUpperCase() + placeholder.substring(1, placeholder.length());
+
+            Object o = null;
+
+            try {
+                Method method = event.getClass().getMethod(getterName);
+                o = method.invoke(event);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String replacement = o != null ? o.toString() : "";
+            message = message.replace("{" + placeholder + "}", replacement);
+        }
+
+
+        return message;
     }
 
 

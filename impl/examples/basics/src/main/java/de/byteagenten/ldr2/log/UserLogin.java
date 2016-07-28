@@ -5,7 +5,11 @@ import de.byteagenten.ldr2.LogEvent;
 /**
  * Created by knooma2e on 26.07.2016.
  */
-@LogEvent(name = "user_login", level = LogEvent.Level.DEBUG, message = "User logged in")
+@LogEvent(
+        name = "user_login",
+        level = LogEvent.Level.DEBUG,
+        message = "User {givenName} {sureName} (id: {id}) logged in"
+)
 public class UserLogin {
 
     private long id;

@@ -6,13 +6,19 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * Hello world!
- *
  */
-public class BasicExample
-{
-    public static void main( String[] args ) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+public class BasicExample {
+    public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
-        Logger.init("myApp", ElasticsearchLogWriter.class);
+        Logger.init("myApp", ConsoleOutputLogWriter.class);
+
+        Logger.log();
+
+        Logger.log(null);
+
+        Logger.log("this is my first log");
+
+        Logger.log("this is my second log", LogEvent.Level.WARN);
 
         Logger.log(ApplicationStarted.class);
 
@@ -38,6 +44,11 @@ public class BasicExample
         } catch (Exception e) {
             Logger.log(e, LogEventConfig.create().setLevel(LogEvent.Level.ERROR).setMessage("bad luck"));
         }
+
+        Logger.log(LogEventConfig.create().setMessage("This is my message"));
+
+        Logger.log(LogEventConfig.create().setMessage("This is my message").setLevel(LogEvent.Level.DEBUG));
+
 
     }
 }

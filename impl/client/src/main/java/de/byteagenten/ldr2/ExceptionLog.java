@@ -6,13 +6,13 @@ import java.io.StringWriter;
 /**
  * Created by knooma2e on 26.07.2016.
  */
-@LogEvent(name = "Throwable", level = LogEvent.Level.WARN)
-public class ThrowableWrapper {
+@LogEvent(name = "exception_log", level = LogEvent.Level.WARN)
+public class ExceptionLog {
 
     private Throwable throwable;
     private String stackTrace;
 
-    public ThrowableWrapper(Throwable throwable) {
+    public ExceptionLog(Throwable throwable) {
 
         this.throwable = throwable;
 

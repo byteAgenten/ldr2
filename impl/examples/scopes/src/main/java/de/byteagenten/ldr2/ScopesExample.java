@@ -12,7 +12,7 @@ public class ScopesExample
 {
     public static void main( String[] args ) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
-        Logger.init("myApp", ConsoleOutputLogWriter.class);
+        Logger.init("myApp", ElasticsearchLogWriter.class);
 
         SessionContext sessionContext = new SimpleSessionContext();
         Logger.setSessionContext(sessionContext);

@@ -68,7 +68,7 @@ public class GenericLogEvent {
 
         event.applicationId = applicationId;
         event.eventName = eventName;
-        event.eventClass = eventClass.getName();
+        event.eventClass = eventClass != null ? eventClass.getName() : null;
         event.logLevel = logLevel;
 
         event.jsonObject = new JsonObject();
