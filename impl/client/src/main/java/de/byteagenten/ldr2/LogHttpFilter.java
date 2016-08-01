@@ -3,6 +3,7 @@ package de.byteagenten.ldr2;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by knooma2e on 22.07.2016.
@@ -13,6 +14,7 @@ public class LogHttpFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+
 
     }
 

@@ -1,0 +1,27 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+    <filter>
+        <filter-name>Ldr2Filter</filter-name>
+        <filter-class>de.byteagenten.ldr2.LogHttpFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>Ldr2Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>ExampleServlet</servlet-name>
+        <servlet-class>de.byteagenten.ldr2.examples.webapp.ExampleServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ExampleServlet</servlet-name>
+        <url-pattern>/example/*</url-pattern>
+    </servlet-mapping>
+</web-app>

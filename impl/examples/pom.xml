@@ -15,6 +15,7 @@
     <modules>
         <module>basics</module>
         <module>scopes</module>
+        <module>webapp</module>
     </modules>
 
     <properties>

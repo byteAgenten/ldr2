@@ -279,7 +279,7 @@ public class Logger {
 
 
     public static LogEvent.Level getDefaultLogLevel() {
-        return LogEvent.Level.INFO;
+        return LogEvent.Level.ERROR;
     }
 
     public static void clear() {
