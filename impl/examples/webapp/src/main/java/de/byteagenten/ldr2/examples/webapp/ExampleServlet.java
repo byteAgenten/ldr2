@@ -1,6 +1,6 @@
 package de.byteagenten.ldr2.examples.webapp;
 
-import de.byteagenten.ldr2.ConsoleOutputLogWriter;
+import de.byteagenten.ldr2.writer.ConsoleOutputLogWriter;
 import de.byteagenten.ldr2.Logger;
 
 import javax.servlet.ServletConfig;

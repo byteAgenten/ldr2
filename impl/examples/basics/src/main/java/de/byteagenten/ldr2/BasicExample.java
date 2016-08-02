@@ -1,19 +1,31 @@
 package de.byteagenten.ldr2;
 
 import de.byteagenten.ldr2.log.*;
+import de.byteagenten.ldr2.writer.ConsoleOutputLogWriter;
+import de.byteagenten.ldr2.writer.ElasticsearchLogWriter;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Properties;
 
 /**
  * Hello world!
  */
 public class BasicExample {
-    public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws InitializeException {
 
-        Logger.init("myApp", ElasticsearchLogWriter.class);
+
+
+        Properties properties = new Properties();
+
+        properties.put(ElasticsearchLogWriter.HOST, "localhost");
+        properties.put(ElasticsearchLogWriter.PORT, "9300");
+
+        Logger.init("myApp", ElasticsearchLogWriter.class, properties);
+
+
+        //Logger.init("myApp", ConsoleOutputLogWriter.class);
 
         //Most simple log call!
-
         Logger.log();
 
         Logger.log(null);

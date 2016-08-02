@@ -9,21 +9,21 @@ import java.io.StringWriter;
 @LogEvent(name = "exception_log", level = LogEvent.Level.WARN)
 public class ExceptionLog {
 
-    private Throwable throwable;
+    private Throwable exception;
     private String stackTrace;
 
     public ExceptionLog(Throwable throwable) {
 
-        this.throwable = throwable;
+        this.exception = throwable;
 
         StringWriter writer = new StringWriter(100);
         PrintWriter printWriter = new PrintWriter(writer);
-        this.throwable.printStackTrace(printWriter);
+        this.exception.printStackTrace(printWriter);
         this.stackTrace = writer.getBuffer().toString();
     }
 
-    public Throwable getThrowable() {
-        return throwable;
+    public Throwable getException() {
+        return exception;
     }
 
     public String getStackTrace() {

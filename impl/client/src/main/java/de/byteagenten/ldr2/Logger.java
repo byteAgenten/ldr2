@@ -1,6 +1,8 @@
 package de.byteagenten.ldr2;
 
 import com.google.gson.JsonObject;
+import de.byteagenten.ldr2.writer.LogWriter;
+import de.byteagenten.ldr2.writer.WriterException;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -56,11 +58,21 @@ public class Logger {
 
     private static String applicationId;
 
-    public static void init(String applicationId, Class logWriterClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public static void init(String applicationId, Class logWriterClass) throws InitializeException {
+        Logger.init(applicationId, logWriterClass, new Properties());
+    }
 
-        Logger.logWriter = (LogWriter) logWriterClass.getConstructor().newInstance();
-        Logger.applicationId = applicationId;
-        Logger.logWriter.init();
+    public static void init(String applicationId, Class logWriterClass, Properties properties) throws InitializeException {
+
+        try {
+            Logger.logWriter = (LogWriter) logWriterClass.getConstructor().newInstance();
+            Logger.applicationId = applicationId;
+            Logger.logWriter.init(properties);
+
+        } catch (Exception e) {
+            throw new InitializeException("Logger can't be initialized.", e);
+        }
+
     }
 
 
@@ -114,7 +126,7 @@ public class Logger {
 
         } else if (inEvent instanceof String) {
 
-            inEvent = new SimpleTextLog((String) inEvent);
+            inEvent = new MessageLog((String) inEvent);
         }
 
 
@@ -175,7 +187,16 @@ public class Logger {
                 Arrays.asList(Introspector.getBeanInfo(event.getClass())
                         .getPropertyDescriptors()).stream()
                         .filter(pd -> {
-                            return pd.getReadMethod() != null && !pd.getReadMethod().getName().contains("getClass");
+
+                            Method readMethod = pd.getReadMethod();
+                            if (readMethod == null) return false;
+                            if (readMethod.getName().contains("getClass")) return false;
+
+                            NoLog noLogAnnotation = readMethod.getAnnotation(NoLog.class);
+                            if (noLogAnnotation != null) return false;
+
+                            return true;
+
                         }).forEach(pd -> {
                     try {
 
