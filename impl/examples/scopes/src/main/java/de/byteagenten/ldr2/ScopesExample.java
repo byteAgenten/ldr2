@@ -1,6 +1,7 @@
 package de.byteagenten.ldr2;
 
 import de.byteagenten.ldr2.log.*;
+import de.byteagenten.ldr2.writer.ConsoleOutputLogWriter;
 import de.byteagenten.ldr2.writer.ElasticsearchLogWriter;
 
 import java.lang.reflect.InvocationTargetException;
@@ -11,9 +12,9 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ScopesExample
 {
-    public static void main( String[] args ) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static void main( String[] args ) throws InitializeException {
 
-        Logger.init("myApp", ElasticsearchLogWriter.class);
+        Logger.init("myApp", ConsoleOutputLogWriter.class);
 
         SessionContext sessionContext = new SimpleSessionContext();
         Logger.setSessionContext(sessionContext);
