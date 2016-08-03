@@ -1,10 +1,9 @@
 package de.byteagenten.ldr2;
 
 import de.byteagenten.ldr2.log.*;
-import de.byteagenten.ldr2.writer.ConsoleOutputLogWriter;
-import de.byteagenten.ldr2.writer.ElasticsearchLogWriter;
+import de.byteagenten.ldr2.writer.MemoryLogWriter;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -17,11 +16,17 @@ public class BasicExample {
 
         Properties properties = new Properties();
 
+        /*
         properties.put(ElasticsearchLogWriter.HOST, "localhost");
         properties.put(ElasticsearchLogWriter.PORT, "9300");
 
         Logger.init("myApp", ElasticsearchLogWriter.class, properties);
+        */
+        properties.put(MemoryLogWriter.BUFFER_SIZE, "2");
 
+        MemoryLogWriter memoryLogWriter = new MemoryLogWriter();
+
+        Logger.init("myApp", memoryLogWriter, properties);
 
         //Logger.init("myApp", ConsoleOutputLogWriter.class);
 
@@ -43,7 +48,6 @@ public class BasicExample {
 
 
         Logger.log(AppStarted.class);
-
 
 
         Logger.log(new UserLogin(1, "James", "Bond"));
@@ -74,6 +78,11 @@ public class BasicExample {
 
         Logger.log(LogEventConfig.create().setMessage("This is my message").setLevel(LogEvent.Level.DEBUG));
 
+        List<GenericLogEvent> events = memoryLogWriter.getBuffer();
+
+        for (GenericLogEvent event : events) {
+            System.out.println(event.getJsonString());
+        }
 
     }
 }

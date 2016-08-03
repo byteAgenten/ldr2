@@ -64,15 +64,25 @@ public class Logger {
 
     public static void init(String applicationId, Class logWriterClass, Properties properties) throws InitializeException {
 
+        LogWriter logWriter = null;
         try {
-            Logger.logWriter = (LogWriter) logWriterClass.getConstructor().newInstance();
-            Logger.applicationId = applicationId;
-            Logger.logWriter.init(properties);
-
+            logWriter = (LogWriter) logWriterClass.getConstructor().newInstance();
         } catch (Exception e) {
-            throw new InitializeException("Logger can't be initialized.", e);
+            throw new InitializeException("LogWriter can't be instantiated.", e);
         }
 
+        Logger.init(applicationId, logWriter, properties);
+    }
+
+    public static void init(String applicationId, LogWriter logWriter, Properties properties) throws InitializeException {
+
+        Logger.applicationId = applicationId;
+        Logger.logWriter = logWriter;
+        try {
+            Logger.logWriter.init(properties);
+        } catch (WriterException e) {
+            throw new InitializeException("LogWriter can't be initialized.", e);
+        }
     }
 
 
@@ -338,8 +348,8 @@ public class Logger {
 
     public static void removeScope(String scopeName) {
 
-        Scope removedScope =  Logger.scopeStack.get().remove(scopeName);
-        if (sessionContext.get() != null && removedScope != null &&  removedScope.isSessionPersistent()) {
+        Scope removedScope = Logger.scopeStack.get().remove(scopeName);
+        if (sessionContext.get() != null && removedScope != null && removedScope.isSessionPersistent()) {
             sessionContext.get().removeScope(removedScope.getName());
         }
     }
