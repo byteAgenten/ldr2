@@ -36,7 +36,7 @@ public class ExampleServlet extends HttpServlet {
 
         } else if(req.getRequestURI().endsWith("/logout")) {
 
-            Logger.popScope();
+            Logger.removeScope("user");
         }
 
         Logger.log("hello");

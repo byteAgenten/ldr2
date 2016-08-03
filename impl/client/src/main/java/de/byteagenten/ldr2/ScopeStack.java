@@ -24,13 +24,20 @@ public class ScopeStack {
     }
 
     public Scope pop() {
-        if( this.size() == 0) throw new IllegalStateException("");
+        if (this.size() == 0) throw new IllegalStateException("");
         return this.scopes.remove(0);
     }
 
     public Scope remove(String scopeName) {
 
-        return null;
+        Scope scope = scopes.stream().filter(s -> s.getName().equalsIgnoreCase(scopeName)).findFirst().orElse(null);
+        if (scope != null) {
+            scopes.remove(scope);
+        } else if (this.parent != null) {
+            scope = this.parent.remove(scopeName);
+        }
+
+        return scope;
     }
 
     public int size() {
@@ -44,7 +51,7 @@ public class ScopeStack {
     private static List<Scope> collectScopes(ScopeStack scopeStack, List<Scope> scopeList) {
 
         scopeList.addAll(scopeStack.scopes);
-        if( scopeStack.parent != null) collectScopes(scopeStack.parent, scopeList);
+        if (scopeStack.parent != null) collectScopes(scopeStack.parent, scopeList);
         return scopeList;
     }
 

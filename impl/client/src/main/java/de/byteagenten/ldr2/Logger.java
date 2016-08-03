@@ -333,7 +333,13 @@ public class Logger {
     public static void popScope() {
 
         Scope removedScope = Logger.scopeStack.get().pop();
-        if (sessionContext.get() != null && removedScope.isSessionPersistent()) {
+
+    }
+
+    public static void removeScope(String scopeName) {
+
+        Scope removedScope =  Logger.scopeStack.get().remove(scopeName);
+        if (sessionContext.get() != null && removedScope != null &&  removedScope.isSessionPersistent()) {
             sessionContext.get().removeScope(removedScope.getName());
         }
     }
