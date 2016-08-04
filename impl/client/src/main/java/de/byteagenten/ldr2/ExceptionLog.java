@@ -6,7 +6,7 @@ import java.io.StringWriter;
 /**
  * Created by knooma2e on 26.07.2016.
  */
-@LogEvent(name = "exception_log", level = LogEvent.Level.WARN)
+@LogEvent(name = "exception_log", message = "{message}", level = LogEvent.Level.WARN)
 public class ExceptionLog {
 
     private Throwable exception;
@@ -29,5 +29,10 @@ public class ExceptionLog {
     public String getStackTrace() {
 
         return this.stackTrace;
+    }
+
+    @NoLog
+    public String getMessage() {
+        return this.exception.getMessage();
     }
 }

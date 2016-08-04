@@ -1,6 +1,8 @@
 package de.byteagenten.ldr2;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by knooma2e on 22.07.2016.

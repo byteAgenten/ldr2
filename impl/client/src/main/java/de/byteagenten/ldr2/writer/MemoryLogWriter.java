@@ -49,7 +49,7 @@ public class MemoryLogWriter implements LogWriter {
 
                 buffer.remove(buffer.size() - 1);
             }
-            buffer.add(logEvent);
+            buffer.add(0,logEvent);
         }
 
     }

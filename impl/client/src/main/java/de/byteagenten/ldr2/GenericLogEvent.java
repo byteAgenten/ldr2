@@ -97,4 +97,15 @@ public class GenericLogEvent {
         Gson gson = new Gson();
         return gson.toJson(this.getJsonObject());
     }
+
+    public String getMessage() {
+
+        return getProperty(Logger.MESSAGE);
+    }
+
+    public String getProperty(String name) {
+
+        if( !this.jsonObject.has(name)) return "";
+        return this.jsonObject.get(name).getAsString();
+    }
 }

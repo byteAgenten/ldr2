@@ -27,11 +27,13 @@ public class Logger {
     private static final String REQUEST_URL = "#requestUrl";
     private static final String THREAD_ID = "#threadId";
     private static final String THREAD_NAME = "#threadName";
-    private static final String MESSAGE = "#message";
+    public static final String MESSAGE = "#message";
 
 
     public static final String ISO_UTC = "YYYY-MM-dd'T'HH:mm:ss.S";
     public static final TimeZone UTC = TimeZone.getTimeZone("utc");
+
+
 
     private static final ThreadLocal<SessionContext> sessionContext = new ThreadLocal<SessionContext>() {
         @Override
@@ -354,4 +356,7 @@ public class Logger {
         }
     }
 
+    public static LogWriter getLogWriter() {
+        return logWriter;
+    }
 }
