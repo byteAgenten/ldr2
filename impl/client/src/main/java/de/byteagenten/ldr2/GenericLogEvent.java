@@ -6,19 +6,30 @@ import com.google.gson.JsonObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by knooma2e on 22.07.2016.
  */
 public class GenericLogEvent {
 
-    private static final String TIMESTAMP_MILLIS = "#timestampMillis";
-    private static final String TIMESTAMP = "#timestamp";
-    private static final String APPLICATION_ID = "#appId";
-    private static final String EVENT_NAME = "#eventName";
-    private static final String EVENT_CLASS = "#eventClass";
-    private static final String LOG_LEVEL = "#logLevel";
+    public static final String SESSION_ID = "#sessionId";
+    public static final String SESSION_START_TIMESTAMP = "#sessionStart";
+    public static final String REQUEST_INDEX = "#requestIndex";
+    public static final String REQUEST_START_TIMESTAMP = "#requestStart";
+    public static final String REQUEST_URL = "#requestUrl";
+    public static final String THREAD_ID = "#threadId";
+    public static final String THREAD_NAME = "#threadName";
+    public static final String MESSAGE = "#message";
+    public static final String TIMESTAMP_MILLIS = "#timestampMillis";
+    public static final String TIMESTAMP = "#timestamp";
+    public static final String APPLICATION_ID = "#appId";
+    public static final String EVENT_NAME = "#eventName";
+    public static final String EVENT_CLASS = "#eventClass";
+    public static final String LOG_LEVEL = "#logLevel";
 
     private long timestampMillis;
 
@@ -100,12 +111,23 @@ public class GenericLogEvent {
 
     public String getMessage() {
 
-        return getProperty(Logger.MESSAGE);
+        return getProperty(MESSAGE);
     }
 
     public String getProperty(String name) {
 
         if( !this.jsonObject.has(name)) return "";
         return this.jsonObject.get(name).getAsString();
+    }
+
+    public Map<String, String> getPropertiesMap() {
+
+        final Map<String, String> propertiesMap = new LinkedHashMap<>();
+
+        this.jsonObject.entrySet().stream().forEach(set -> {
+
+            propertiesMap.put(set.getKey(), set.getValue().getAsString());
+        });
+        return propertiesMap;
     }
 }

@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+
+
+}
+
+ul.ldr2-event-list {
+    flex-direction: column;
+}
+
+ul.ldr2-event-list > li {
+    flex-direction: row;
+    display:flex;
+}
+
+ul.ldr2-event-list > li > section {
+    flex-direction: column;
+    display: flex;
+}
+
+ul.ldr2-event-list > li > span {
+    flex-grow: 1;
+    display: block;
+}
+
+span.ldr2-timestamp {
+    white-space: nowrap;
+}
+
+ul.ldr2-event-attributes {
+    flex-direction: column;
+}
+

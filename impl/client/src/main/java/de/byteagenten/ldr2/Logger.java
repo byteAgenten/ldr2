@@ -1,7 +1,6 @@
 package de.byteagenten.ldr2;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.byteagenten.ldr2.writer.ConsoleOutputLogWriter;
@@ -28,14 +27,7 @@ public class Logger {
 
     private static final String APPLICATION_ID_PROPERTY = "srsng.log.app.id";
 
-    private static final String SESSION_SCOPE_ID = "#sessionId";
-    private static final String SESSION_START_TIMESTAMP = "#sessionStart";
-    private static final String REQUEST_INDEX = "#requestIndex";
-    private static final String REQUEST_START_TIMESTAMP = "#requestStart";
-    private static final String REQUEST_URL = "#requestUrl";
-    private static final String THREAD_ID = "#threadId";
-    private static final String THREAD_NAME = "#threadName";
-    public static final String MESSAGE = "#message";
+
 
 
     public static final String ISO_UTC = "YYYY-MM-dd'T'HH:mm:ss.S";
@@ -146,24 +138,24 @@ public class Logger {
 
         if (logEventConfig.isSessionAware() && Logger.sessionContext.get() != null) {
 
-            jsonObject.addProperty(SESSION_SCOPE_ID, Logger.sessionContext.get().getSessionId());
-            jsonObject.addProperty(SESSION_START_TIMESTAMP, df.format(Logger.sessionContext.get().getStartTimestamp()));
+            jsonObject.addProperty(GenericLogEvent.SESSION_ID, Logger.sessionContext.get().getSessionId());
+            jsonObject.addProperty(GenericLogEvent.SESSION_START_TIMESTAMP, df.format(Logger.sessionContext.get().getStartTimestamp()));
         }
         if (logEventConfig.isRequestAware() && Logger.requestContext.get() != null) {
 
-            jsonObject.addProperty(REQUEST_INDEX, Logger.requestContext.get().getIndex());
-            jsonObject.addProperty(REQUEST_URL, Logger.requestContext.get().getUrl());
-            jsonObject.addProperty(REQUEST_START_TIMESTAMP, df.format(Logger.requestContext.get().getStartTimestamp()));
+            jsonObject.addProperty(GenericLogEvent.REQUEST_INDEX, Logger.requestContext.get().getIndex());
+            jsonObject.addProperty(GenericLogEvent.REQUEST_URL, Logger.requestContext.get().getUrl());
+            jsonObject.addProperty(GenericLogEvent.REQUEST_START_TIMESTAMP, df.format(Logger.requestContext.get().getStartTimestamp()));
         }
 
         if (logEventConfig.isThreadAware()) {
-            jsonObject.addProperty(THREAD_ID, Thread.currentThread().getId());
-            jsonObject.addProperty(THREAD_NAME, Thread.currentThread().getName());
+            jsonObject.addProperty(GenericLogEvent.THREAD_ID, Thread.currentThread().getId());
+            jsonObject.addProperty(GenericLogEvent.THREAD_NAME, Thread.currentThread().getName());
         }
 
         if (logEventConfig.getMessage() != null && logEventConfig.getMessage().length() > 0) {
 
-            jsonObject.addProperty(MESSAGE, buildMessage(event, logEventConfig.getMessage()));
+            jsonObject.addProperty(GenericLogEvent.MESSAGE, buildMessage(event, logEventConfig.getMessage()));
         }
 
 

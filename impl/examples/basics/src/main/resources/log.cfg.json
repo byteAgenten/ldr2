@@ -9,7 +9,7 @@
       "class": "de.byteagenten.ldr2.writer.MemoryLogWriter",
       "name": "memory_logger_1",
       "config": {
-        "bufferSize": 3,
+        "bufferSize": 100,
         "maxAgeMinutes": 60
       }
     },
