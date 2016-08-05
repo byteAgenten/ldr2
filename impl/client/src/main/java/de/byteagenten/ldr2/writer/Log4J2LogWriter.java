@@ -2,6 +2,7 @@ package de.byteagenten.ldr2.writer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import de.byteagenten.ldr2.GenericLogEvent;
 import org.apache.logging.log4j.LogManager;
 
@@ -13,6 +14,8 @@ import java.util.Properties;
 public class Log4J2LogWriter implements LogWriter {
 
     private static final org.apache.logging.log4j.Logger log4jLogger = LogManager.getLogger();
+
+    private String name;
 
     private Gson gson = new GsonBuilder().create();
 
@@ -47,13 +50,13 @@ public class Log4J2LogWriter implements LogWriter {
     }
 
     @Override
-    public void init(Properties properties) throws WriterException {
-
+    public void init(String name, JsonObject writerConfigJsonObject) throws WriterException {
+        this.name = name;
     }
 
     @Override
-    public void init() throws WriterException {
-
+    public String getName() {
+        return this.name;
     }
 
     @Override

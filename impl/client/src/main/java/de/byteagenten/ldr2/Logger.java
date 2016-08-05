@@ -1,11 +1,19 @@
 package de.byteagenten.ldr2;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import de.byteagenten.ldr2.writer.ConsoleOutputLogWriter;
 import de.byteagenten.ldr2.writer.LogWriter;
 import de.byteagenten.ldr2.writer.WriterException;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -34,7 +42,6 @@ public class Logger {
     public static final TimeZone UTC = TimeZone.getTimeZone("utc");
 
 
-
     private static final ThreadLocal<SessionContext> sessionContext = new ThreadLocal<SessionContext>() {
         @Override
         protected SessionContext initialValue() {
@@ -56,37 +63,9 @@ public class Logger {
         }
     };
 
-    private static LogWriter logWriter;
+    private static List<LogWriter> logWriter = new ArrayList<>();
 
     private static String applicationId;
-
-    public static void init(String applicationId, Class logWriterClass) throws InitializeException {
-        Logger.init(applicationId, logWriterClass, new Properties());
-    }
-
-    public static void init(String applicationId, Class logWriterClass, Properties properties) throws InitializeException {
-
-        LogWriter logWriter = null;
-        try {
-            logWriter = (LogWriter) logWriterClass.getConstructor().newInstance();
-        } catch (Exception e) {
-            throw new InitializeException("LogWriter can't be instantiated.", e);
-        }
-
-        Logger.init(applicationId, logWriter, properties);
-    }
-
-    public static void init(String applicationId, LogWriter logWriter, Properties properties) throws InitializeException {
-
-        Logger.applicationId = applicationId;
-        Logger.logWriter = logWriter;
-        try {
-            Logger.logWriter.init(properties);
-        } catch (WriterException e) {
-            throw new InitializeException("LogWriter can't be initialized.", e);
-        }
-    }
-
 
     public static void setSessionContext(SessionContext sessionContext) {
         Logger.sessionContext.set(sessionContext);
@@ -255,7 +234,8 @@ public class Logger {
                 });
             }
 
-            if (Logger.logWriter != null) Logger.logWriter.write(genericLogEvent);
+            logWriter.stream().forEach( writer -> writer.write(genericLogEvent));
+
 
         } catch (IntrospectionException e) {
             e.printStackTrace();
@@ -356,7 +336,96 @@ public class Logger {
         }
     }
 
-    public static LogWriter getLogWriter() {
-        return logWriter;
+    public static LogWriter getLogWriter(String name) {
+        return logWriter.stream().filter( w -> w.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public static void init(File config) throws InitializeException {
+
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(config));
+        } catch (FileNotFoundException e) {
+            throw new InitializeException(String.format("No config file found at: %s", config.getAbsolutePath()));
+        }
+
+        StringBuffer stringBuffer = new StringBuffer();
+        reader.lines().forEach(line -> stringBuffer.append(line));
+
+        JsonParser parser = new JsonParser();
+        JsonObject json = (JsonObject) parser.parse(stringBuffer.toString());
+
+        if (!json.has("appKey")) throw new InitializeException("No 'appKey' specified in configuration.");
+
+        applicationId = json.get("appKey").getAsString(); //todo: check that it is a string primitive
+
+        if (!json.has("writer")) {
+            logWriter.add(new ConsoleOutputLogWriter());
+            System.out.println(String.format("No writer specified. Adding a default one -> %s", ConsoleOutputLogWriter.class.getName()));
+        }
+
+        if (!json.get("writer").isJsonArray()) {
+            throw new InitializeException("Config attribute 'writer' has to be an array.");
+        }
+
+        JsonArray writerJsonArray = (JsonArray) json.get("writer");
+        writerJsonArray.iterator().forEachRemaining(writerConfig -> {
+            if (!writerConfig.isJsonObject()) return;
+
+            JsonObject writerConfigJson = (JsonObject) writerConfig;
+
+            String loggerName = "logger_" + logWriter.size();
+            if (writerConfigJson.has("name")
+                    && writerConfigJson.get("name").isJsonPrimitive()
+                    && writerConfigJson.get("name").getAsJsonPrimitive().isString()) {
+
+                loggerName = writerConfigJson.get("name").getAsString();
+            }
+
+
+            if (!writerConfigJson.has("class")) {
+                //todo: log message
+                return;
+            }
+            if (!writerConfigJson.get("class").isJsonPrimitive()) {
+                //todo: log
+                return;
+            }
+
+            String clazz = writerConfigJson.get("class").getAsString();
+
+
+            LogWriter lwr = null;
+            try {
+                lwr = (LogWriter) Class.forName(clazz).getConstructor().newInstance();
+            } catch (Exception e) {
+                //throw new InitializeException("LogWriter can't be instantiated.", e);
+                //todo: log
+                return;
+            }
+
+            JsonObject writerConfigJsonObject = null;
+
+            if (writerConfigJson.has("config")) {
+
+                if (!writerConfigJson.get("config").isJsonObject()) {
+                    //todo: log
+                    return;
+                }
+
+                writerConfigJsonObject = writerConfigJson.get("config").getAsJsonObject();
+            }
+
+            try {
+                lwr.init(loggerName, writerConfigJsonObject);
+            } catch (WriterException e) {
+                //todo: log
+                return;
+            }
+
+            logWriter.add(lwr);
+        });
+
+
     }
 }

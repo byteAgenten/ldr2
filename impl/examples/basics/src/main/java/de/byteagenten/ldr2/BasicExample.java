@@ -3,6 +3,8 @@ package de.byteagenten.ldr2;
 import de.byteagenten.ldr2.log.*;
 import de.byteagenten.ldr2.writer.MemoryLogWriter;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
@@ -13,22 +15,8 @@ public class BasicExample {
     public static void main(String[] args) throws InitializeException {
 
 
-
-        Properties properties = new Properties();
-
-        /*
-        properties.put(ElasticsearchLogWriter.HOST, "localhost");
-        properties.put(ElasticsearchLogWriter.PORT, "9300");
-
-        Logger.init("myApp", ElasticsearchLogWriter.class, properties);
-        */
-        properties.put(MemoryLogWriter.BUFFER_SIZE, "2");
-
-        MemoryLogWriter memoryLogWriter = new MemoryLogWriter();
-
-        Logger.init("myApp", memoryLogWriter, properties);
-
-        //Logger.init("myApp", ConsoleOutputLogWriter.class);
+        File config = new File("/Users/matthias/Development/Projects/ldr2/impl/examples/basics/src/main/resources/log.cfg.json");
+        Logger.init(config);
 
         //Most simple log call!
         Logger.log();
@@ -39,13 +27,9 @@ public class BasicExample {
 
         Logger.log("this is my second log", LogEvent.Level.WARN);
 
-
         Logger.log(ApplicationStarted.class);
 
-
         Logger.log(ApplicationStarted.class, LogEventConfig.create().setLevel(LogEvent.Level.DEBUG).setName("application_start"));
-
-
 
         Logger.log(AppStarted.class);
 
@@ -78,7 +62,7 @@ public class BasicExample {
 
         Logger.log(LogEventConfig.create().setMessage("This is my message").setLevel(LogEvent.Level.DEBUG));
 
-        List<GenericLogEvent> events = memoryLogWriter.getBuffer();
+        List<GenericLogEvent> events = ((MemoryLogWriter)Logger.getLogWriter("memory_logger_1")).getBuffer();
 
         for (GenericLogEvent event : events) {
             System.out.println(event.getJsonString());

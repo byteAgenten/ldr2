@@ -1,5 +1,6 @@
 package de.byteagenten.ldr2.writer;
 
+import com.google.gson.JsonObject;
 import de.byteagenten.ldr2.GenericLogEvent;
 
 import java.util.Properties;
@@ -9,11 +10,11 @@ import java.util.Properties;
  */
 public interface LogWriter {
 
-    void init(Properties properties) throws WriterException;
-
-    void init() throws WriterException;
-
     void write(GenericLogEvent logEvent);
 
     void dispose();
+
+    void init(String name, JsonObject writerConfigJsonObject) throws WriterException;
+
+    String getName();
 }
