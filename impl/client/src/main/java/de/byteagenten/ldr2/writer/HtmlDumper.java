@@ -49,10 +49,15 @@ public class HtmlDumper {
     private static void dumpItem(final StringBuilder sb, GenericLogEvent event) {
 
         sb.append("<section class='ldr2-event-meta'>");
-        sb.append("<span class='ldr2-timestamp'>").append(event.getTimestamp()).append("</span>");
+        sb.append("<span class='ldr2-event-time'>").append(event.getTimeString()).append("</span>");
+        sb.append("<span class='ldr2-event-date'>").append(event.getDateString()).append("</span>");
+        /*
         sb.append("<span class='ldr2-event-name'>").append(event.getEventName()).append("</span>");
-        sb.append("<span class='ldr2-session-id'>").append(event.getProperty(GenericLogEvent.SESSION_ID)).append("</span>");
-        sb.append("<span class='ldr2-request-index'>").append(event.getProperty(GenericLogEvent.REQUEST_INDEX)).append("</span>");
+        sb.append("<span class='ldr2-event-session-id'>").append(event.getProperty(GenericLogEvent.SESSION_ID)).append("</span>");
+        sb.append("<span class='ldr2-event-request-index'>").append(event.getProperty(GenericLogEvent.REQUEST_INDEX)).append("</span>");
+        */
+        sb.append("<span class='ldr2-event-message'>").append(event.getProperty(GenericLogEvent.MESSAGE)).append("</span>");
+
         sb.append("</section>");
         sb.append("<ul class='ldr2-event-attributes'>");
 
@@ -60,8 +65,8 @@ public class HtmlDumper {
 
             sb.append("<li>");
 
-            sb.append("<span>").append(key).append("</span>");
-            sb.append("<span>").append(value).append("</span>");
+            sb.append("<span class='ldr2-attribute-key'>").append(key).append("</span>");
+            sb.append("<span class='ldr2-attribute-value'>").append(value).append("</span>");
 
             sb.append("</li>");
         });

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  */
 public class GenericLogEvent {
 
+
     public static final String SESSION_ID = "#sessionId";
     public static final String SESSION_START_TIMESTAMP = "#sessionStart";
     public static final String REQUEST_INDEX = "#requestIndex";
@@ -129,5 +130,16 @@ public class GenericLogEvent {
             propertiesMap.put(set.getKey(), set.getValue().getAsString());
         });
         return propertiesMap;
+    }
+
+    public String getTimeString() {
+
+        DateFormat df = new SimpleDateFormat(Logger.TIME_PATTERN);
+        return df.format(this.timestampMillis);
+    }
+
+    public String getDateString() {
+        DateFormat df = new SimpleDateFormat(Logger.DATE_PATTERN);
+        return df.format(this.timestampMillis);
     }
 }

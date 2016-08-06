@@ -6,6 +6,7 @@ import de.byteagenten.ldr2.writer.ConsoleOutputLogWriter;
 import de.byteagenten.ldr2.Logger;
 import de.byteagenten.ldr2.writer.HtmlDumper;
 import de.byteagenten.ldr2.writer.MemoryLogWriter;
+import de.byteagenten.ldr2.writer.WriterException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.InvalidPropertiesFormatException;
 
 /**
  * Created by matthias on 28.07.16.
@@ -53,16 +55,35 @@ public class ExampleServlet extends HttpServlet {
             if(req.getRequestURI().endsWith("/login")) {
 
                 Logger.pushScope("user", "jbond", true);
+                Logger.log(new UserLogin(1, "James", "Bond"));
 
             } else if(req.getRequestURI().endsWith("/logout")) {
 
                 Logger.removeScope("user");
 
+            }else if(req.getRequestURI().endsWith("/null")) {
+
+                Object nullObject = null;
+
+                try {
+                    try {
+                        nullObject.toString();
+                    } catch (Exception e) {
+                        throw new WriterException("Object is null", e);
+                    }
+                } catch (WriterException e) {
+                    Logger.log(e);
+                }
+
+            } else if(req.getRequestURI().endsWith("/msg")) {
+
+                Logger.log(String.format("No writer specified. Adding a default one -> %s", ConsoleOutputLogWriter.class));
             }
 
             Logger.log("hello");
 
             resp.setContentType("text/plain");
+            resp.getWriter().write("Happy logging!");
 
         }
 

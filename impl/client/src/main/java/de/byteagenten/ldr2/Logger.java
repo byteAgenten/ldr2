@@ -27,10 +27,9 @@ public class Logger {
 
     private static final String APPLICATION_ID_PROPERTY = "srsng.log.app.id";
 
-
-
-
-    public static final String ISO_UTC = "YYYY-MM-dd'T'HH:mm:ss.S";
+    public static final String TIME_PATTERN  = "HH:mm:ss.S";
+    public static final String DATE_PATTERN  = "YYYY-MM-dd";
+    public static final String ISO_UTC = DATE_PATTERN + "'T'" + TIME_PATTERN;
     public static final TimeZone UTC = TimeZone.getTimeZone("utc");
 
 

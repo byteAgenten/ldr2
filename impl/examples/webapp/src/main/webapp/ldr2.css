@@ -1,6 +1,8 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10pt;
+    margin: 0;
+    color: #8a8a8a;
 }
 
 ul {
@@ -19,23 +21,58 @@ ul.ldr2-event-list {
 ul.ldr2-event-list > li {
     flex-direction: row;
     display:flex;
+    background: -webkit-linear-gradient(top, #313132 , #1f1f21);
+    padding: 5pt 10pt;
 }
 
 ul.ldr2-event-list > li > section {
     flex-direction: column;
     display: flex;
+    min-width: 300px;
+    flex-basis: 0;
 }
 
 ul.ldr2-event-list > li > span {
-    flex-grow: 1;
-    display: block;
+
 }
 
-span.ldr2-timestamp {
-    white-space: nowrap;
+section.ldr2-event-meta {
+    flex-grow: 1;
 }
 
 ul.ldr2-event-attributes {
     flex-direction: column;
+    flex-grow: 3;
+    flex-basis: 0;
+    margin-left: 10pt;
 }
 
+ul.ldr2-event-attributes > li {
+    display:flex;
+
+}
+
+span.ldr2-event-time {
+    font-size: 20pt;
+    font-weight: bold;
+    text-shadow: 2pt 2pt 5pt #000000;
+}
+
+span.ldr2-event-date {
+    font-size: 14pt;
+    text-shadow: 2pt 2pt 5pt #000000;
+}
+
+span.ldr2-attribute-key {
+    min-width: 150px;
+    display: inline-block;
+
+}
+
+span.ldr2-attribute-value {
+    margin-left: 10pt;
+}
+
+span.ldr2-event-message {
+    margin-top: 20pt;
+}
