@@ -1,7 +1,9 @@
 package de.byteagenten.ldr2.writer;
 
 import de.byteagenten.ldr2.GenericLogEvent;
+import de.byteagenten.ldr2.InitializeException;
 
+import java.io.*;
 import java.util.List;
 
 /**
@@ -11,10 +13,22 @@ public class HtmlDumper {
 
     public static String dumpPage(List<GenericLogEvent> logEventList) {
 
+
+        StringBuilder sbCss = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(HtmlDumper.class.getResourceAsStream("/ldr2.css")))) {
+
+            reader.lines().forEach(sbCss::append);
+
+        } catch (IOException e) {
+            //todo: log
+        }
+
+
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
         sb.append("<head>");
-        sb.append("<link rel='stylesheet' type='text/css' href='../ldr2.css'>");
+        sb.append("<style>").append(sbCss.toString()).append("</style>");
         sb.append("</head>");
 
         sb.append("<body>");
