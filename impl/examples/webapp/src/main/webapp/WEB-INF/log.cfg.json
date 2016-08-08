@@ -1,0 +1,27 @@
+{
+  "appKey": "myApp",
+  "writer": [
+    {
+      "class": "de.byteagenten.ldr2.writer.ConsoleOutputLogWriter",
+      "name": "console_logger_1"
+    },
+    {
+      "class": "de.byteagenten.ldr2.writer.MemoryLogWriter",
+      "name": "memory_logger_1",
+      "config": {
+        "bufferSize": 100,
+        "maxAgeMinutes": 60
+      }
+    },
+    {
+      "class": "de.byteagenten.ldr2.writer.ElasticsearchLogWriter",
+      "name": "elastic_logger",
+      "config": {
+        "url": "localhost",
+        "port": 9300,
+        "user": "admin",
+        "password": "xyz"
+      }
+    }
+  ]
+}

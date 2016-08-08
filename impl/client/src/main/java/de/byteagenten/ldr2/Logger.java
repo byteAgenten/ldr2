@@ -9,10 +9,7 @@ import de.byteagenten.ldr2.writer.WriterException;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -27,10 +24,10 @@ public class Logger {
 
     private static final String APPLICATION_ID_PROPERTY = "srsng.log.app.id";
 
-    public static final String DAY_OF_WEEK_PATTERN  = "EEEE";
-    public static final String TIME_PATTERN  = "HH:mm:ss.S";
-    public static final String DATE_PATTERN  = "YYYY-MM-dd";
-    public static final String LONG_DATE_PATTERN  = DAY_OF_WEEK_PATTERN + "',' YYYY-MM-dd";
+    public static final String DAY_OF_WEEK_PATTERN = "EEEE";
+    public static final String TIME_PATTERN = "HH:mm:ss.S";
+    public static final String DATE_PATTERN = "YYYY-MM-dd";
+    public static final String LONG_DATE_PATTERN = DAY_OF_WEEK_PATTERN + "',' YYYY-MM-dd";
     public static final String ISO_UTC = DATE_PATTERN + "'T'" + TIME_PATTERN;
     public static final TimeZone UTC = TimeZone.getTimeZone("utc");
 
@@ -227,7 +224,7 @@ public class Logger {
                 });
             }
 
-            logWriter.stream().forEach( writer -> writer.write(genericLogEvent));
+            logWriter.stream().forEach(writer -> writer.write(genericLogEvent));
 
 
         } catch (IntrospectionException e) {
@@ -330,23 +327,32 @@ public class Logger {
     }
 
     public static LogWriter getLogWriter(String name) {
-        return logWriter.stream().filter( w -> w.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        return logWriter.stream().filter(w -> w.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     public static void init(File config) throws InitializeException {
 
-        BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(config));
+            init(new FileInputStream(config));
         } catch (FileNotFoundException e) {
             throw new InitializeException(String.format("No config file found at: %s", config.getAbsolutePath()));
         }
+    }
 
-        StringBuffer stringBuffer = new StringBuffer();
-        reader.lines().forEach(line -> stringBuffer.append(line));
+    public static void init(InputStream inputStream) throws InitializeException {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+
+            reader.lines().forEach(stringBuilder::append);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         JsonParser parser = new JsonParser();
-        JsonObject json = (JsonObject) parser.parse(stringBuffer.toString());
+        JsonObject json = (JsonObject) parser.parse(stringBuilder.toString());
 
         if (!json.has("appKey")) throw new InitializeException("No 'appKey' specified in configuration.");
 
