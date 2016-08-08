@@ -142,4 +142,9 @@ public class GenericLogEvent {
         DateFormat df = new SimpleDateFormat(Logger.DATE_PATTERN);
         return df.format(this.timestampMillis);
     }
+
+    public String getLongDateString() {
+        DateFormat df = new SimpleDateFormat(Logger.LONG_DATE_PATTERN);
+        return df.format(this.timestampMillis);
+    }
 }

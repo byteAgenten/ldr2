@@ -12,6 +12,8 @@ public class ExceptionLog {
     private Throwable exception;
     private String stackTrace;
 
+    private String message;
+
     public ExceptionLog(Throwable throwable) {
 
         this.exception = throwable;
@@ -20,6 +22,8 @@ public class ExceptionLog {
         PrintWriter printWriter = new PrintWriter(writer);
         this.exception.printStackTrace(printWriter);
         this.stackTrace = writer.getBuffer().toString();
+
+        this.message = this.exception.getMessage() != null ? this.exception.getMessage() : this.exception.toString();
     }
 
     public Throwable getException() {
@@ -33,6 +37,6 @@ public class ExceptionLog {
 
     @NoLog
     public String getMessage() {
-        return this.exception.getMessage();
+        return this.message;
     }
 }

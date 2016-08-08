@@ -69,6 +69,7 @@ public class ExampleServlet extends HttpServlet {
                     try {
                         nullObject.toString();
                     } catch (Exception e) {
+                        Logger.log(e);
                         throw new WriterException("Object is null", e);
                     }
                 } catch (WriterException e) {

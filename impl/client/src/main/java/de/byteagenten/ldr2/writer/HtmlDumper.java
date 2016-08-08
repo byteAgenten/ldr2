@@ -50,7 +50,7 @@ public class HtmlDumper {
 
         sb.append("<section class='ldr2-event-meta'>");
         sb.append("<span class='ldr2-event-time'>").append(event.getTimeString()).append("</span>");
-        sb.append("<span class='ldr2-event-date'>").append(event.getDateString()).append("</span>");
+        sb.append("<span class='ldr2-event-date'>").append(event.getLongDateString()).append("</span>");
         /*
         sb.append("<span class='ldr2-event-name'>").append(event.getEventName()).append("</span>");
         sb.append("<span class='ldr2-event-session-id'>").append(event.getProperty(GenericLogEvent.SESSION_ID)).append("</span>");
