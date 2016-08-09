@@ -17,7 +17,7 @@
     <servlet>
         <servlet-name>ExampleServlet</servlet-name>
         <servlet-class>de.byteagenten.ldr2.examples.webapp.ExampleServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
+        <load-open-startup>2</load-open-startup>
     </servlet>
 
     <servlet-mapping>

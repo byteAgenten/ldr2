@@ -1,19 +1,18 @@
 package de.byteagenten.ldr2.writer;
 
+import com.sun.tools.javac.jvm.Gen;
 import de.byteagenten.ldr2.GenericLogEvent;
-import de.byteagenten.ldr2.InitializeException;
 import de.byteagenten.ldr2.Logger;
 
 import java.io.*;
-import java.util.List;
+import java.util.*;
 
 /**
- * Created by matthias on 05.08.16.
+ * Created by matthias open 05.08.16.
  */
 public class HtmlDumper {
 
-    public static String dumpPage(List<GenericLogEvent> logEventList) {
-
+    public static String dumpPage(List<GenericLogEvent> logEventList, Map<String, String> filterMap) {
 
         StringBuilder sbCss = new StringBuilder();
 
@@ -25,6 +24,8 @@ public class HtmlDumper {
             //todo: log
         }
 
+        StringBuilder listSb = new StringBuilder();
+        List<GenericLogEvent> dumpedEvents = dumpList(listSb, logEventList, filterMap);
 
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
@@ -34,8 +35,8 @@ public class HtmlDumper {
 
         sb.append("<body>");
         dumpLogo(sb);
-        sb.append(dumpHeader(logEventList));
-        sb.append(dumpList(logEventList));
+        sb.append(dumpHeader(dumpedEvents));
+        sb.append(listSb);
         sb.append("</body>");
         sb.append("</html>");
         return sb.toString();
@@ -49,7 +50,7 @@ public class HtmlDumper {
 
         dumpHeaderProperty(sb, "&nbsp;", "LDR2");
         dumpHeaderProperty(sb, "Entry Count", String.valueOf(logEventList.size()));
-        dumpHeaderProperty(sb, "Oldest entry", String.valueOf(logEventList.get(logEventList.size() - 1).getTimestamp()));
+        dumpHeaderProperty(sb, "Oldest entry", logEventList.size() > 0 ? String.valueOf(logEventList.get(logEventList.size() - 1).getTimestamp()) : "");
         dumpHeaderProperty(sb, "App key", Logger.getApplicationId());
 
         sb.append("</section>");
@@ -70,44 +71,63 @@ public class HtmlDumper {
         sb.append("</section>");
     }
 
-    public static String dumpList(List<GenericLogEvent> logEventList) {
+    /*
+    public static String dumpList(List<GenericLogEvent> logEventList, Map<String, String> filterMap) {
 
         final StringBuilder sb = new StringBuilder();
-        dumpList(sb, logEventList);
+        dumpList(sb, logEventList, filterMap);
         return sb.toString();
     }
+    */
 
-    public static void dumpList(final StringBuilder sb, List<GenericLogEvent> logEventList) {
+    public static List<GenericLogEvent> dumpList(final StringBuilder sb, List<GenericLogEvent> logEventList, final Map<String, String> filterMap) {
 
         sb.append("<ul class='ldr2-event-list'>");
 
+        final List<GenericLogEvent> dumpedEvents = new ArrayList<>();
+
         logEventList.stream().forEach(event -> {
 
-            sb.append("<li>");
-            dumpItem(sb, event);
-            sb.append("</li>");
+            if (dumpItem(sb, event, filterMap)) {
+                dumpedEvents.add(event);
+            }
+
         });
 
         sb.append("</ul>");
 
+        return dumpedEvents;
     }
 
-    private static void dumpItem(final StringBuilder sb, GenericLogEvent event) {
+    private static boolean dumpItem(final StringBuilder sb, GenericLogEvent event, Map<String, String> filterMap) {
 
+        Map<String, String> propertiesMap = event.getPropertiesMap();
+
+        final Gate gate = new Gate();
+
+        if (filterMap != null) {
+            filterMap.entrySet().stream().forEach(filterEntry -> {
+
+                if (!propertiesMap.containsKey(filterEntry.getKey())) gate.setOpen(false);
+
+                if (!filterEntry.getValue().equalsIgnoreCase(propertiesMap.get(filterEntry.getKey())))
+                    gate.setOpen(false);
+            });
+        }
+
+        if (!gate.isOpen()) return false;
+
+        sb.append("<li>");
         sb.append("<section class='ldr2-event-meta'>");
         sb.append("<span class='ldr2-event-time'>").append(event.getTimeString()).append("</span>");
         sb.append("<span class='ldr2-event-date'>").append(event.getLongDateString()).append("</span>");
-        /*
-        sb.append("<span class='ldr2-event-name'>").append(event.getEventName()).append("</span>");
-        sb.append("<span class='ldr2-event-session-id'>").append(event.getProperty(GenericLogEvent.SESSION_ID)).append("</span>");
-        sb.append("<span class='ldr2-event-request-index'>").append(event.getProperty(GenericLogEvent.REQUEST_INDEX)).append("</span>");
-        */
+
         sb.append("<span class='ldr2-event-message'>").append(event.getProperty(GenericLogEvent.MESSAGE)).append("</span>");
 
         sb.append("</section>");
         sb.append("<ul class='ldr2-event-attributes'>");
 
-        event.getPropertiesMap().forEach((key, value) -> {
+        propertiesMap.forEach((key, value) -> {
 
             sb.append("<li>");
 
@@ -118,5 +138,45 @@ public class HtmlDumper {
         });
 
         sb.append("</ul>");
+        sb.append("</li>");
+
+        return true;
+    }
+
+
+    public static Map<String, String> parseFilter(String filterString) {
+
+        final Map<String, String> filterMap = new HashMap<>();
+
+        if (filterString == null) return filterMap;
+
+        String[] filterItemStrings = filterString.split(",");
+        Arrays.asList(filterItemStrings).stream().forEach(filterItemString -> {
+
+            String[] item = filterItemString.split("=");
+            if (item.length == 2 && item[0].length() > 0) {
+
+                if (item[0].charAt(0) == '$') item[0] = "#" + item[0].substring(1, item[0].length());
+                filterMap.put(item[0], item[1]);
+            }
+        });
+        return filterMap;
     }
 }
+
+class Gate {
+
+    private boolean open = true;
+
+    public Gate() {
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+}
+

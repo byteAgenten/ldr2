@@ -127,7 +127,7 @@ public class GenericLogEvent {
 
         this.jsonObject.entrySet().stream().forEach(set -> {
 
-            propertiesMap.put(set.getKey(), set.getValue().getAsString());
+           if( set.getValue().isJsonPrimitive() && set.getValue().getAsJsonPrimitive().isString()) propertiesMap.put(set.getKey(), set.getValue().getAsString());
         });
         return propertiesMap;
     }

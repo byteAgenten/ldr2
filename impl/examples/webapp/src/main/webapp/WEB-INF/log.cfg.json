@@ -10,7 +10,7 @@
       "name": "memory_logger_1",
       "config": {
         "bufferSize": 100,
-        "maxAgeMinutes": 1
+        "maxAgeMinutes": 10
       }
     },
     {

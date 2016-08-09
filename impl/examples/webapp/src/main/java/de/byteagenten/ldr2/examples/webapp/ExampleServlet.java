@@ -39,11 +39,11 @@ public class ExampleServlet extends HttpServlet {
 
         if (req.getRequestURI().endsWith("/log")) {
 
+
             resp.setContentType("text/html");
 
             MemoryLogWriter memoryLogWriter = (MemoryLogWriter) Logger.getLogWriter("memory_logger_1");
-
-            resp.getWriter().write(HtmlDumper.dumpPage(memoryLogWriter.getBuffer()));
+            resp.getWriter().write(HtmlDumper.dumpPage(memoryLogWriter.getBuffer(), HtmlDumper.parseFilter(req.getQueryString())));
 
         } else {
 
