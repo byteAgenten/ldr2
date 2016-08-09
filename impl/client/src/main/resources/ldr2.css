@@ -11,7 +11,6 @@ ul {
     padding: 0;
     display: flex;
 
-
 }
 
 ul.ldr2-event-list {
@@ -20,8 +19,8 @@ ul.ldr2-event-list {
 
 ul.ldr2-event-list > li {
     flex-direction: row;
-    display:flex;
-    background: -webkit-linear-gradient(top, #313132 , #1f1f21);
+    display: flex;
+    background: -webkit-linear-gradient(top, #313132, #1f1f21);
     padding: 5pt 10pt;
 }
 
@@ -48,7 +47,7 @@ ul.ldr2-event-attributes {
 }
 
 ul.ldr2-event-attributes > li {
-    display:flex;
+    display: flex;
 
 }
 
@@ -66,7 +65,7 @@ span.ldr2-event-date {
 span.ldr2-attribute-key {
     min-width: 150px;
     display: inline-block;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 li:first-child > span.ldr2-attribute-key {
@@ -75,7 +74,7 @@ li:first-child > span.ldr2-attribute-key {
 
 span.ldr2-attribute-value {
     padding-left: 10pt;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     flex-grow: 1;
 }
 
@@ -85,4 +84,39 @@ li:first-child > span.ldr2-attribute-value {
 
 span.ldr2-event-message {
     margin-top: 20pt;
+}
+
+.ldr2-header {
+    display: flex;
+    flex-direction: row;
+    background: -webkit-linear-gradient(top, #313132, #1f1f21);
+    padding: 10pt;
+}
+
+.ldr2-header-property:first-child {
+    flex: 1;
+}
+
+.ldr2-header-property {
+    display: flex;
+    flex-direction: column;
+    margin-right: 50pt;
+}
+
+.ldr2-label {
+    font-size: 8pt;
+}
+
+.ldr2-value {
+    font-size: 20pt;
+    font-weight: bold;
+    text-shadow: 2pt 2pt 5pt #000000;
+}
+
+img.logo {
+    position: fixed;
+    right: 10pt;
+    bottom: 10pt;
+    width: 101px;
+
 }

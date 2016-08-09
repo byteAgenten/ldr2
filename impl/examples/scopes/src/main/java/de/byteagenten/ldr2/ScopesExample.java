@@ -14,7 +14,7 @@ public class ScopesExample
 {
     public static void main( String[] args ) throws InitializeException {
 
-        Logger.init("myApp", ConsoleOutputLogWriter.class);
+        //Logger.init("myApp", ConsoleOutputLogWriter.class);
 
         SessionContext sessionContext = new SimpleSessionContext();
         Logger.setSessionContext(sessionContext);
@@ -58,7 +58,6 @@ public class ScopesExample
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
 
         Logger.log(MethodExit.class);
         Logger.popScope();

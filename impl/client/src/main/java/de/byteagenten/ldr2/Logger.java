@@ -70,6 +70,10 @@ public class Logger {
         return scopeStack.get().createChild();
     }
 
+    public static String getApplicationId() {
+        return applicationId;
+    }
+
     public static void log(String message, LogEvent.Level logLevel) {
 
         LogEventConfig logEventConfig = LogEventConfig.create();

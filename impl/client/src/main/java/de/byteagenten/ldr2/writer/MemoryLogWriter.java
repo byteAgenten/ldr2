@@ -3,10 +3,7 @@ package de.byteagenten.ldr2.writer;
 import com.google.gson.JsonObject;
 import de.byteagenten.ldr2.GenericLogEvent;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by matthias on 03.08.16.
@@ -29,13 +26,27 @@ public class MemoryLogWriter implements LogWriter {
     public void write(GenericLogEvent logEvent) {
 
         synchronized (this.buffer) {
+
             if (buffer.size() == bufferSize) {
 
                 buffer.remove(buffer.size() - 1);
             }
+
+            removeOldies();
+
             buffer.add(0, logEvent);
         }
 
+    }
+
+    private void removeOldies() {
+        ListIterator<GenericLogEvent> it = this.buffer.listIterator(this.buffer.size());
+        while(it.hasPrevious()) {
+
+            if( it.previous().getTimestampMillis() > System.currentTimeMillis() - maxAgeMinutes * 60000) break;
+
+            it.remove();
+        }
     }
 
     public void clear() {
@@ -48,6 +59,7 @@ public class MemoryLogWriter implements LogWriter {
     public List<GenericLogEvent> getBuffer() {
 
         synchronized (this.buffer) {
+            removeOldies();
             return Collections.unmodifiableList(buffer);
         }
 
