@@ -43,13 +43,16 @@ public class HtmlDumper {
 
     private static String dumpHeader(List<GenericLogEvent> logEventList) {
 
+        GenericLogEvent oldestEntry = logEventList.size() > 0 ? logEventList.get(logEventList.size() - 1) : null;
+
+
         StringBuilder sb = new StringBuilder();
 
         sb.append("<section class='ldr2-header'>");
 
         dumpHeaderProperty(sb, "&nbsp;", "LDR2");
         dumpHeaderProperty(sb, "Entry Count", String.valueOf(logEventList.size()));
-        dumpHeaderProperty(sb, "Oldest entry", logEventList.size() > 0 ? String.valueOf(logEventList.get(logEventList.size() - 1).getTimestamp()) : "");
+        dumpHeaderProperty(sb, "Oldest entry", oldestEntry != null ? (oldestEntry.getDateString() + " " + oldestEntry.getTimeString()) : "-");
         dumpHeaderProperty(sb, "App key", Logger.getApplicationId());
 
         sb.append("</section>");
@@ -100,16 +103,27 @@ public class HtmlDumper {
 
     private static boolean dumpItem(final StringBuilder sb, GenericLogEvent event, Map<String, String> filterMap) {
 
-        Map<String, String> propertiesMap = event.getPropertiesMap();
+        final Map<String, String> propertiesMap = event.getPropertiesMap();
 
         final Gate gate = new Gate();
 
         if (filterMap != null) {
             filterMap.entrySet().stream().forEach(filterEntry -> {
 
-                if (!propertiesMap.containsKey(filterEntry.getKey())) gate.setOpen(false);
+                String key = filterEntry.getKey();
+                if( key.charAt(0) == '!') key = "#" + key.substring(1, key.length());
 
-                if (!filterEntry.getValue().equalsIgnoreCase(propertiesMap.get(filterEntry.getKey())))
+                if (!propertiesMap.containsKey(key)) {
+                    if( key.charAt(0) != '#') {
+                        key = "#" + key;
+                        if( !propertiesMap.containsKey(key)) {
+                            gate.setOpen(false);
+                            return;
+                        }
+                    }
+                }
+
+                if (!filterEntry.getValue().equalsIgnoreCase(propertiesMap.get(key)))
                     gate.setOpen(false);
             });
         }
@@ -149,13 +163,12 @@ public class HtmlDumper {
 
         if (filterString == null) return filterMap;
 
-        String[] filterItemStrings = filterString.split(",");
+        String[] filterItemStrings = filterString.split("&");
         Arrays.asList(filterItemStrings).stream().forEach(filterItemString -> {
 
             String[] item = filterItemString.split("=");
             if (item.length == 2 && item[0].length() > 0) {
 
-                if (item[0].charAt(0) == '$') item[0] = "#" + item[0].substring(1, item[0].length());
                 filterMap.put(item[0], item[1]);
             }
         });

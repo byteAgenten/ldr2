@@ -3,6 +3,7 @@ body {
     font-size: 10pt;
     margin: 0;
     color: #8a8a8a;
+    background-color: #1f1f21;
 }
 
 ul {
@@ -15,12 +16,13 @@ ul {
 
 ul.ldr2-event-list {
     flex-direction: column;
+    margin-top: 70px;
 }
 
 ul.ldr2-event-list > li {
     flex-direction: row;
     display: flex;
-    background: -webkit-linear-gradient(top, #313132, #1f1f21);
+    background: -webkit-linear-gradient(top, #252525, #1f1f21);
     padding: 5pt 10pt;
 }
 
@@ -89,8 +91,12 @@ span.ldr2-event-message {
 .ldr2-header {
     display: flex;
     flex-direction: row;
-    background: -webkit-linear-gradient(top, #313132, #1f1f21);
+    background: -webkit-linear-gradient(top, #1f1f21, #252525);
     padding: 10pt;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    box-shadow: 2px 2px 20px #111111;
 }
 
 .ldr2-header-property:first-child {
