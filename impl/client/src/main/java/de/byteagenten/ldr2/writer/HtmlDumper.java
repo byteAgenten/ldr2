@@ -1,6 +1,5 @@
 package de.byteagenten.ldr2.writer;
 
-import com.sun.tools.javac.jvm.Gen;
 import de.byteagenten.ldr2.GenericLogEvent;
 import de.byteagenten.ldr2.Logger;
 
