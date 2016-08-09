@@ -66,11 +66,21 @@ span.ldr2-event-date {
 span.ldr2-attribute-key {
     min-width: 150px;
     display: inline-block;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
 
+li:first-child > span.ldr2-attribute-key {
+    border-top: none;
 }
 
 span.ldr2-attribute-value {
-    margin-left: 10pt;
+    padding-left: 10pt;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    flex-grow: 1;
+}
+
+li:first-child > span.ldr2-attribute-value {
+    border-top: none;
 }
 
 span.ldr2-event-message {
