@@ -10,4 +10,6 @@ import de.byteagenten.ldr2.LogEvent;
         message = "application has started",
         threadAware = false)
 public class AppStarted {
+
+
 }

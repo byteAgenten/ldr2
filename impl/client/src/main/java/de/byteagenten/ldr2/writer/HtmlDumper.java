@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Created by matthias open 05.08.16.
+ * Created by matthias on 05.08.16.
  */
 public class HtmlDumper {
 

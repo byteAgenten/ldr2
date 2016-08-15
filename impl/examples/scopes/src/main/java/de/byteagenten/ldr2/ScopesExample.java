@@ -4,6 +4,7 @@ import de.byteagenten.ldr2.log.*;
 import de.byteagenten.ldr2.writer.ConsoleOutputLogWriter;
 import de.byteagenten.ldr2.writer.ElasticsearchLogWriter;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -14,7 +15,8 @@ public class ScopesExample
 {
     public static void main( String[] args ) throws InitializeException {
 
-        //Logger.init("myApp", ConsoleOutputLogWriter.class);
+        File config = new File("/Users/matthias/Development/Projects/ldr2/impl/examples/basics/src/main/resources/log.cfg.json");
+        Logger.init(config);
 
         SessionContext sessionContext = new SimpleSessionContext();
         Logger.setSessionContext(sessionContext);

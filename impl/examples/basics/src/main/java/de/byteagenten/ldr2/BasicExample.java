@@ -21,7 +21,9 @@ public class BasicExample {
         //Most simple log call!
         Logger.log();
 
+
         Logger.log(null);
+
 
         Logger.log("this is my first log");
 
@@ -37,19 +39,18 @@ public class BasicExample {
         Logger.log(new UserLogin(1, "James", "Bond"));
 
 
+
         Logger.log(new UserLogin(2, "Austin", "Powers"), LogEventConfig.create().setLevel(LogEvent.Level.WARN).setThreadAware(false));
 
 
-
-
         Object nullObject = null;
+
 
         try {
             nullObject.toString();
         } catch (Exception e) {
             Logger.log(e);
         }
-
 
         try {
             nullObject.toString();
@@ -62,11 +63,6 @@ public class BasicExample {
 
         Logger.log(LogEventConfig.create().setMessage("This is my message").setLevel(LogEvent.Level.DEBUG));
 
-        List<GenericLogEvent> events = ((MemoryLogWriter)Logger.getLogWriter("memory_logger_1")).getBuffer();
-
-        for (GenericLogEvent event : events) {
-            System.out.println(event.getJsonString());
-        }
 
     }
 }
