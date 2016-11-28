@@ -1,5 +1,6 @@
 package de.byteagenten.ldr2.log;
 
+
 import de.byteagenten.ldr2.LogEvent;
 
 /**

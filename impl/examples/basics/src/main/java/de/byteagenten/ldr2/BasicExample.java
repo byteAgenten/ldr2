@@ -1,12 +1,10 @@
 package de.byteagenten.ldr2;
 
-import de.byteagenten.ldr2.log.*;
-import de.byteagenten.ldr2.writer.MemoryLogWriter;
+import de.byteagenten.ldr2.log.AppStarted;
+import de.byteagenten.ldr2.log.ApplicationStarted;
+import de.byteagenten.ldr2.log.UserLogin;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.util.List;
-import java.util.Properties;
 
 /**
  * Hello world!
@@ -37,7 +35,6 @@ public class BasicExample {
 
 
         Logger.log(new UserLogin(1, "James", "Bond"));
-
 
 
         Logger.log(new UserLogin(2, "Austin", "Powers"), LogEventConfig.create().setLevel(LogEvent.Level.WARN).setThreadAware(false));

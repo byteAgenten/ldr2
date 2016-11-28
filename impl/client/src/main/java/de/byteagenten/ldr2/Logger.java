@@ -228,7 +228,7 @@ public class Logger {
                 });
             }
 
-            logWriter.stream().forEach(writer -> writer.write(genericLogEvent));
+            logWriter.forEach(writer -> writer.write(genericLogEvent));
 
 
         } catch (IntrospectionException e) {
