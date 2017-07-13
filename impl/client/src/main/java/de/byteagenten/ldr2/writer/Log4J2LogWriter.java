@@ -17,36 +17,31 @@ public class Log4J2LogWriter implements LogWriter {
 
     private String name;
 
-    private Gson gson = new GsonBuilder().create();
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
     public void write(GenericLogEvent logEvent) {
 
+        String msg = gson.toJson(logEvent.getJsonObject());
+
         switch (logEvent.getLogLevel()) {
 
             case DEBUG:
-                if( log4jLogger.isDebugEnabled()) log4jLogger.debug(gson.toJson(logEvent.getJsonObject()));
+                if( log4jLogger.isDebugEnabled()) log4jLogger.debug(msg);
                 break;
             case INFO:
-                if( log4jLogger.isInfoEnabled()) log4jLogger.info(gson.toJson(logEvent.getJsonObject()));
+                if( log4jLogger.isInfoEnabled()) log4jLogger.info(msg);
                 break;
             case WARN:
-                if( log4jLogger.isWarnEnabled()) log4jLogger.warn(gson.toJson(logEvent.getJsonObject()));
+                if( log4jLogger.isWarnEnabled()) log4jLogger.warn(msg);
                 break;
             case ERROR:
-                if( log4jLogger.isErrorEnabled()) log4jLogger.error(gson.toJson(logEvent.getJsonObject()));
+                if( log4jLogger.isErrorEnabled()) log4jLogger.error(msg);
                 break;
             case FATAL:
-                if( log4jLogger.isFatalEnabled()) log4jLogger.fatal(gson.toJson(logEvent.getJsonObject()));
+                if( log4jLogger.isFatalEnabled()) log4jLogger.fatal(msg);
                 break;
         }
-
-        /*
-        StructuredDataMessage msg = new StructuredDataMessage("1", null, "transfer");
-
-        logEvent.toMap().entrySet().stream().filter(entry -> entry.getValue() != null).forEach( entry -> msg.put(entry.getKey(), entry.getValue().toString()));
-        EventLogger.logEvent(msg);
-        */
     }
 
     @Override

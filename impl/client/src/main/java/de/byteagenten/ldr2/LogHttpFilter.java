@@ -14,6 +14,11 @@ public class LogHttpFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
+        try {
+            Logger.init(filterConfig.getServletContext().getResourceAsStream("/WEB-INF/log.cfg.json"));
+        } catch (InitializeException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -24,12 +29,18 @@ public class LogHttpFilter implements Filter {
 
             HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
 
+            /*
             if( httpServletRequest.getSession().isNew()) {
 
                 httpServletRequest.getSession().setAttribute(SESSION_CONTEXT_ATTRIBUTE_KEY, new HttpServletSessionContext(httpServletRequest.getSession()));
             }
+            */
 
             SessionContext sessionContext = (SessionContext)httpServletRequest.getSession().getAttribute(SESSION_CONTEXT_ATTRIBUTE_KEY);
+            if( sessionContext == null) {
+                sessionContext = new HttpServletSessionContext(httpServletRequest.getSession());
+                httpServletRequest.getSession().setAttribute(SESSION_CONTEXT_ATTRIBUTE_KEY, sessionContext );
+            }
 
             Logger.setSessionContext(sessionContext);
 

@@ -3,7 +3,7 @@
     <parent>
         <artifactId>examples</artifactId>
         <groupId>de.byteagenten.ldr2</groupId>
-        <version>${project.version}</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -12,6 +12,10 @@
 
     <name>scopes</name>
     <url>http://maven.apache.org</url>
+
+    <build>
+        <finalName>ldr2-examples-scopes-${project.version}</finalName>
+    </build>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

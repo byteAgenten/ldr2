@@ -2,10 +2,6 @@
   "appKey": "myApp",
   "writer": [
     {
-      "class": "de.byteagenten.ldr2.writer.ConsoleOutputLogWriter",
-      "name": "console_logger_1"
-    },
-    {
       "class": "de.byteagenten.ldr2.writer.MemoryLogWriter",
       "name": "memory_logger_1",
       "config": {
@@ -14,14 +10,8 @@
       }
     },
     {
-      "class": "de.byteagenten.ldr2.writer.ElasticsearchLogWriter",
-      "name": "elastic_logger",
-      "config": {
-        "host": "ms175.moonshot.fastwebserver.de",
-        "port": 9300,
-        "user": "admin",
-        "password": "xyz"
-      }
+      "class": "de.byteagenten.ldr2.writer.Log4J2LogWriter",
+      "name": "log4j2_logger"
     }
   ]
 }

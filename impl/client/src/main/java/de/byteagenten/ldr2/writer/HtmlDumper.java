@@ -11,6 +11,15 @@ import java.util.*;
  */
 public class HtmlDumper {
 
+    public static void dumpPage(List<GenericLogEvent> logEventList, Map<String, String> filterMap, OutputStream os) throws IOException {
+
+        try(OutputStreamWriter writer = new OutputStreamWriter(os)) {
+
+            writer.write(dumpPage(logEventList, filterMap));
+            writer.flush();
+        }
+    }
+
     public static String dumpPage(List<GenericLogEvent> logEventList, Map<String, String> filterMap) {
 
         StringBuilder sbCss = new StringBuilder();
@@ -111,12 +120,12 @@ public class HtmlDumper {
             filterMap.entrySet().stream().forEach(filterEntry -> {
 
                 String key = filterEntry.getKey();
-                if( key.charAt(0) == '!') key = "#" + key.substring(1, key.length());
+                if (key.charAt(0) == '!') key = "#" + key.substring(1, key.length());
 
                 if (!propertiesMap.containsKey(key)) {
-                    if( key.charAt(0) != '#') {
+                    if (key.charAt(0) != '#') {
                         key = "#" + key;
-                        if( !propertiesMap.containsKey(key)) {
+                        if (!propertiesMap.containsKey(key)) {
                             gate.setOpen(false);
                             return;
                         }
