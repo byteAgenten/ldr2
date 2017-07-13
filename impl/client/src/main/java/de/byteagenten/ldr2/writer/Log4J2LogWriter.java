@@ -17,7 +17,7 @@ public class Log4J2LogWriter implements LogWriter {
 
     private String name;
 
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private Gson gson;
 
     @Override
     public void write(GenericLogEvent logEvent) {
@@ -45,8 +45,19 @@ public class Log4J2LogWriter implements LogWriter {
     }
 
     @Override
-    public void init(String name, JsonObject writerConfigJsonObject) throws WriterException {
+    public void init(String name, JsonObject configJson) throws WriterException {
         this.name = name;
+
+        boolean prettyPrinting = true;
+        if (configJson != null && configJson.has("prettyPrinting")) {
+
+            if (!configJson.get("prettyPrinting").isJsonPrimitive() || !configJson.get("prettyPrinting").getAsJsonPrimitive().isBoolean())
+                throw new WriterException("prettyPrinting configuration attribute is not a boolean");
+
+            prettyPrinting = configJson.get("prettyPrinting").getAsBoolean();
+        }
+
+        this.gson = prettyPrinting ? new GsonBuilder().setPrettyPrinting().create() : new GsonBuilder().create();
     }
 
     @Override

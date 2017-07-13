@@ -11,7 +11,10 @@
     },
     {
       "class": "de.byteagenten.ldr2.writer.Log4J2LogWriter",
-      "name": "log4j2_logger"
+      "name": "log4j2_logger",
+      "config": {
+        "prettyPrinting": false
+      }
     }
   ]
 }
