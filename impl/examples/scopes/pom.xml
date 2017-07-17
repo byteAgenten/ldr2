@@ -31,7 +31,7 @@
         <dependency>
             <groupId>de.byteagenten.ldr2</groupId>
             <artifactId>ldr2-logger</artifactId>
-            <version>2.0.0-beta.1</version>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 </project>
