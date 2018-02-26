@@ -10,10 +10,11 @@ import java.io.File;
  * Hello world!
  */
 public class BasicExample {
+
     public static void main(String[] args) throws InitializeException {
 
 
-        File config = new File("/Users/matthias/Development/Projects/ldr2/impl/examples/basics/src/main/resources/log.cfg.json");
+        File config = new File("C:\\Development\\Projects\\ldr2\\impl\\examples\\basics\\src\\main\\resources\\log.cfg.json");
         Logger.init(config);
 
         //Most simple log call!

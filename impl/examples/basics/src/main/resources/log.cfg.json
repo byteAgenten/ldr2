@@ -1,19 +1,14 @@
 {
-  "appKey": "myApp",
+  "appKey": "ldr2_basic_example",
   "writer": [
     {
-      "class": "de.byteagenten.ldr2.writer.MemoryLogWriter",
-      "name": "memory_logger_1",
+      "class": "de.byteagenten.ldr2.writer.ElasticRestLogWriter",
+      "name": "elastic_rest_logger",
       "config": {
-        "bufferSize": 10,
-        "maxAgeMinutes": 60
-      }
-    },
-    {
-      "class": "de.byteagenten.ldr2.writer.Log4J2LogWriter",
-      "name": "log4j2_logger",
-      "config": {
-        "prettyPrinting": false
+        "host": "10.81.49.109",
+        "port": 9200,
+        "user": "admin",
+        "password": "xyz"
       }
     }
   ]
