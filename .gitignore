@@ -1,0 +1,12 @@
+*.orig
+*.DS_Store
+*.7z
+*.zip
+__MACOSX
+*.iml
+impl/**/*.log*
+impl/**/target/
+impl/**/temp/
+.idea
+~$*
+
