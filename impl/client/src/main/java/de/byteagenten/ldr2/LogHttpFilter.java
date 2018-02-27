@@ -15,7 +15,7 @@ public class LogHttpFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
 
         try {
-            Logger.init(filterConfig.getServletContext().getResourceAsStream("/WEB-INF/log.cfg.json"));
+            Logger.init(filterConfig.getServletContext().getResourceAsStream("/WEB-INF/ldr2.cfg.json"));
         } catch (InitializeException e) {
             e.printStackTrace();
         }
