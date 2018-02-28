@@ -56,6 +56,7 @@ public class Logger {
     private static List<LogWriter> logWriter = new ArrayList<>();
 
     private static String applicationId;
+    private static boolean initialized;
 
     public static void setSessionContext(SessionContext sessionContext) {
         Logger.sessionContext.set(sessionContext);
@@ -89,6 +90,9 @@ public class Logger {
         log(evt, null);
     }
 
+    public static boolean isInitialized() {
+        return initialized;
+    }
 
     public static void log(Object inEvent, LogEventConfig specificLogEventConfig) {
 
@@ -428,7 +432,7 @@ public class Logger {
 
             logWriter.add(lwr);
         });
-
+        initialized = true;
 
     }
 }
