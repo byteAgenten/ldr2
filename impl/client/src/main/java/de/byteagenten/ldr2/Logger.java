@@ -401,13 +401,14 @@ public class Logger {
 
             String clazz = writerConfigJson.get("class").getAsString();
 
-
+            System.out.println(String.format("Try to create log writer instance for '%s' [%s]", loggerName, clazz));
             LogWriter lwr = null;
             try {
                 lwr = (LogWriter) Class.forName(clazz).getConstructor().newInstance();
             } catch (Exception e) {
                 //throw new InitializeException("LogWriter can't be instantiated.", e);
                 //todo: log
+                e.printStackTrace();
                 return;
             }
 

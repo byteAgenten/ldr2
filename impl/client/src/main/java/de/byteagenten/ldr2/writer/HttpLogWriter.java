@@ -18,8 +18,9 @@ public class HttpLogWriter implements LogWriter {
     @Override
     public void write(GenericLogEvent logEvent) {
 
-        String payload = logEvent.getJsonString();
         try {
+            String payload = logEvent.getJsonString();
+
             URL url = new URL(String.format("%s/%s/%s/",
                     this.elasticUrl,
                     logEvent.getApplicationId().toLowerCase(),
@@ -37,7 +38,7 @@ public class HttpLogWriter implements LogWriter {
             dos.close();
 
             int responseCode = connection.getResponseCode();
-            System.out.println("responseCode = " + responseCode);
+            System.out.println("Elastic responseCode = " + responseCode);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -52,6 +53,7 @@ public class HttpLogWriter implements LogWriter {
     @Override
     public void init(String name, JsonObject configJson) throws WriterException {
 
+        System.out.println("Initialize " + this.getClass().getName());
         this.name = name.toLowerCase();
 
         if( !configJson.get(CONFIG_PARAM_URL).isJsonPrimitive() || !configJson.get(CONFIG_PARAM_URL).getAsJsonPrimitive().isString()) {
