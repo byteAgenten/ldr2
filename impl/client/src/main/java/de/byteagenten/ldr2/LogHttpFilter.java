@@ -18,11 +18,16 @@ public class LogHttpFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
 
         try {
+            System.out.println(String.format("Try to load config at %s", DEFAULT_CONFIG_FILE_PATH));
             InputStream resourceAsStream = filterConfig.getServletContext().getResourceAsStream(DEFAULT_CONFIG_FILE_PATH);
-            if( resourceAsStream == null) throw new InitializeException(String.format("No ldr2 configuration file found at: %s", DEFAULT_CONFIG_FILE_PATH));
+            if( resourceAsStream == null) {
+                String msg = String.format("No ldr2 configuration file found at: %s", DEFAULT_CONFIG_FILE_PATH);
+                System.out.println(msg);
+                throw new InitializeException(msg);
+            }
             Logger.init(resourceAsStream);
 
-        } catch (InitializeException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }
