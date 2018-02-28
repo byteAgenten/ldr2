@@ -3,6 +3,7 @@ package de.byteagenten.ldr2;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by knooma2e on 22.07.2016.
@@ -11,11 +12,16 @@ public class LogHttpFilter implements Filter {
 
     private static final String SESSION_CONTEXT_ATTRIBUTE_KEY = "$srsng.logging.session-context$";
 
+    private static final String DEFAULT_CONFIG_FILE_PATH = "/WEB-INF/ldr2.cfg.json";
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
         try {
-            Logger.init(filterConfig.getServletContext().getResourceAsStream("/WEB-INF/ldr2.cfg.json"));
+            InputStream resourceAsStream = filterConfig.getServletContext().getResourceAsStream(DEFAULT_CONFIG_FILE_PATH);
+            if( resourceAsStream == null) throw new InitializeException(String.format("No ldr2 configuration file found at: %s", DEFAULT_CONFIG_FILE_PATH));
+            Logger.init(resourceAsStream);
+
         } catch (InitializeException e) {
             e.printStackTrace();
         }
