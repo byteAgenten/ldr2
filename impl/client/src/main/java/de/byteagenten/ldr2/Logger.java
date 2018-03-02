@@ -96,7 +96,7 @@ public class Logger {
 
     public static void log(Object inEvent, LogEventConfig specificLogEventConfig) {
 
-        if (Logger.applicationId == null)
+        if (!isInitialized())
             throw new IllegalStateException("Logger not initialized. Please call Logger.init() first.");
 
         if (inEvent == null) inEvent = new NullLog();
@@ -347,7 +347,12 @@ public class Logger {
         }
     }
 
-    public static void init(InputStream inputStream) throws InitializeException {
+    public static synchronized void init(InputStream inputStream) throws InitializeException {
+
+        if(isInitialized()) {
+            System.out.println("Logger is initialized already.");
+            return;
+        }
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -376,6 +381,7 @@ public class Logger {
         }
 
         JsonArray writerJsonArray = (JsonArray) json.get("writer");
+
         writerJsonArray.iterator().forEachRemaining(writerConfig -> {
             if (!writerConfig.isJsonObject()) return;
 
@@ -434,6 +440,5 @@ public class Logger {
             logWriter.add(lwr);
         });
         initialized = true;
-
     }
 }
