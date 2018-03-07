@@ -2,6 +2,7 @@ package de.byteagenten.ldr2;
 
 import de.byteagenten.ldr2.log.AppStarted;
 import de.byteagenten.ldr2.log.ApplicationStarted;
+import de.byteagenten.ldr2.log.ERequestDuration;
 import de.byteagenten.ldr2.log.UserLogin;
 
 import java.io.File;
@@ -16,6 +17,10 @@ public class BasicExample {
 
         File config = new File("impl\\examples\\basics\\src\\main\\resources\\ldr2.cfg.json");
         Logger.init(config);
+
+        long startMillis = System.currentTimeMillis();
+        ERequestDuration evt = new ERequestDuration(startMillis, "-", "url");
+        Logger.log(evt);
 
         //Most simple log call!
         Logger.log();

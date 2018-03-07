@@ -141,7 +141,6 @@ public class Logger {
         DateFormat df = new SimpleDateFormat(ISO_UTC);
         df.setTimeZone(UTC);
 
-
         if (logEventConfig.isSessionAware() && Logger.sessionContext.get() != null) {
 
             jsonObject.addProperty(GenericLogEvent.SESSION_ID, Logger.sessionContext.get().getSessionId());
@@ -197,12 +196,12 @@ public class Logger {
 
                         } else if (pt.isAssignableFrom(Long.class) || (pt.isPrimitive() && (pt == Long.TYPE))) {
 
-                            if(pd.getName().equalsIgnoreCase("timestamp")) {
+                            if (pd.getName().equalsIgnoreCase("timestamp")) {
 
                                 Long timestamp = (Long) pd.getReadMethod().invoke(event);
-                                if( timestamp != null) {
-                                    jsonObject.addProperty(GenericLogEvent.TIMESTAMP_MILLIS,timestamp);
-                                    jsonObject.addProperty(GenericLogEvent.TIMESTAMP,df.format(timestamp));
+                                if (timestamp != null) {
+                                    jsonObject.addProperty(GenericLogEvent.TIMESTAMP_MILLIS, timestamp);
+                                    jsonObject.addProperty(GenericLogEvent.TIMESTAMP, df.format(timestamp));
                                 }
 
                             } else {
@@ -365,7 +364,7 @@ public class Logger {
 
     public static synchronized void init(InputStream inputStream) throws InitializeException {
 
-        if(isInitialized()) {
+        if (isInitialized()) {
             System.out.println("Logger is initialized already.");
             return;
         }

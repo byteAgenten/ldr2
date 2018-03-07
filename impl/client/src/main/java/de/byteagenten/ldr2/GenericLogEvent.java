@@ -73,6 +73,7 @@ public class GenericLogEvent {
     public static GenericLogEvent create(String applicationId, String eventName, Class eventClass, LogEvent.Level logLevel) {
 
         DateFormat df = new SimpleDateFormat(Logger.ISO_UTC);
+        df.setTimeZone(Logger.UTC);
 
         GenericLogEvent event = new GenericLogEvent();
         event.timestampMillis = System.currentTimeMillis();
