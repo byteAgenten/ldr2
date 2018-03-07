@@ -232,7 +232,13 @@ public class Logger {
                 });
             }
 
-            logWriter.forEach(writer -> writer.write(genericLogEvent));
+            logWriter.forEach(writer -> {
+                try {
+                    writer.write(genericLogEvent);
+                } catch (Throwable e) {
+                    //bad luck
+                }
+            });
 
 
         } catch (IntrospectionException e) {
