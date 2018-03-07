@@ -14,7 +14,7 @@ public class BasicExample {
     public static void main(String[] args) throws InitializeException {
 
 
-        File config = new File("C:\\Development\\Projects\\ldr2\\impl\\examples\\basics\\src\\main\\resources\\log.cfg.json");
+        File config = new File("impl\\examples\\basics\\src\\main\\resources\\ldr2.cfg.json");
         Logger.init(config);
 
         //Most simple log call!

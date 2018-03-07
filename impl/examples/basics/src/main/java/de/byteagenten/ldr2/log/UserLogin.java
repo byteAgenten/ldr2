@@ -19,10 +19,13 @@ public class UserLogin {
 
     private String sureName;
 
+    private Long timestamp;
+
     public UserLogin(long id, String givenName, String sureName) {
         this.id = id;
         this.givenName = givenName;
         this.sureName = sureName;
+        this.timestamp = System.currentTimeMillis();
     }
 
     public long getId() {
@@ -47,5 +50,13 @@ public class UserLogin {
 
     public void setSureName(String sureName) {
         this.sureName = sureName;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 }

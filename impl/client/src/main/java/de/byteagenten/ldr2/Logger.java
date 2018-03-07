@@ -197,7 +197,17 @@ public class Logger {
 
                         } else if (pt.isAssignableFrom(Long.class) || (pt.isPrimitive() && (pt == Long.TYPE))) {
 
-                            jsonObject.addProperty(pd.getName(), (Long) pd.getReadMethod().invoke(event));
+                            if(pd.getName().equalsIgnoreCase("timestamp")) {
+
+                                Long timestamp = (Long) pd.getReadMethod().invoke(event);
+                                if( timestamp != null) {
+                                    jsonObject.addProperty(GenericLogEvent.TIMESTAMP_MILLIS,timestamp);
+                                    jsonObject.addProperty(GenericLogEvent.TIMESTAMP,df.format(timestamp));
+                                }
+
+                            } else {
+                                jsonObject.addProperty(pd.getName(), (Long) pd.getReadMethod().invoke(event));
+                            }
 
                         } else if (pt.isAssignableFrom(Integer.class) || (pt.isPrimitive() && pt == Integer.TYPE)) {
 

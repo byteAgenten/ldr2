@@ -2,14 +2,8 @@
   "appKey": "ldr2_basic_example",
   "writer": [
     {
-      "class": "de.byteagenten.ldr2.writer.ElasticRestLogWriter",
-      "name": "elastic_rest_logger",
-      "config": {
-        "host": "10.81.49.109",
-        "port": 9200,
-        "user": "admin",
-        "password": "xyz"
-      }
+      "class": "de.byteagenten.ldr2.writer.ConsoleOutputLogWriter",
+      "name": "console_logger_1"
     }
   ]
 }
