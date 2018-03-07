@@ -94,7 +94,7 @@ public class Logger {
         return initialized;
     }
 
-    public static void log(Object inEvent, LogEventConfig specificLogEventConfig) {
+    public static synchronized void log(Object inEvent, LogEventConfig specificLogEventConfig) {
 
         if (!isInitialized())
             throw new IllegalStateException("Logger not initialized. Please call Logger.init() first.");
