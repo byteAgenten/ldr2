@@ -5,7 +5,7 @@
 
     <name>ldr2</name>
     <artifactId>all</artifactId>
-    <version>1.1.7</version>
+    <version>1.3.0</version>
     <groupId>de.byteagenten.ldr2</groupId>
     <packaging>pom</packaging>
 
@@ -47,7 +47,7 @@
         <version.log4j>1.2.17</version.log4j>
         <version.slf4j.log4j12>1.7.21</version.slf4j.log4j12>
         <version.junit>4.12</version.junit>
-        <version.ldr2>1.1.7</version.ldr2>
+        <version.ldr2>1.3.0</version.ldr2>
    </properties>
 
     <profiles>

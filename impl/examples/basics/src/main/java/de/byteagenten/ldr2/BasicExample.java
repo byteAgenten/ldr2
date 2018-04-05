@@ -39,11 +39,9 @@ public class BasicExample {
 
         Logger.log(AppStarted.class);
 
+        UserLogin.create(1, "James", "Bond").log();
 
-        Logger.log(new UserLogin(1, "James", "Bond"));
-
-
-        Logger.log(new UserLogin(2, "Austin", "Powers"), LogEventConfig.create().setLevel(LogEvent.Level.WARN).setThreadAware(false));
+        UserLogin.create(2, "Austin", "Powers").log(LogEventConfig.create().setLevel(LogEvent.Level.WARN).setThreadAware(false));
 
 
         Object nullObject = null;
@@ -59,6 +57,8 @@ public class BasicExample {
             nullObject.toString();
         } catch (Exception e) {
             Logger.log(e, LogEventConfig.create().setLevel(LogEvent.Level.ERROR).setMessage("bad luck"));
+
+            Logger.log(e, "Bad luck");
         }
 
 
@@ -67,5 +67,6 @@ public class BasicExample {
         Logger.log(LogEventConfig.create().setMessage("This is my message").setLevel(LogEvent.Level.DEBUG));
 
 
+        //Logger.dispose();
     }
 }

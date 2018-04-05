@@ -73,7 +73,7 @@ public class MemoryLogWriter implements LogWriter {
 
 
     @Override
-    public void init(String name, JsonObject configJson) throws WriterException {
+    public void init(String applicationId, String name, JsonObject configJson) throws WriterException {
 
         this.name = name;
 

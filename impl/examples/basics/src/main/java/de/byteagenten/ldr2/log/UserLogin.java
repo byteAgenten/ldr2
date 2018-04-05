@@ -2,6 +2,7 @@ package de.byteagenten.ldr2.log;
 
 
 import de.byteagenten.ldr2.LogEvent;
+import de.byteagenten.ldr2.LogObject;
 
 /**
  * Created by knooma2e on 26.07.2016.
@@ -11,7 +12,7 @@ import de.byteagenten.ldr2.LogEvent;
         level = LogEvent.Level.DEBUG,
         message = "User {givenName} {sureName} (id: {id}) logged in"
 )
-public class UserLogin {
+public class UserLogin extends LogObject {
 
     private long id;
 
@@ -21,11 +22,16 @@ public class UserLogin {
 
     private Long timestamp;
 
-    public UserLogin(long id, String givenName, String sureName) {
+    private UserLogin(long id, String givenName, String sureName) {
         this.id = id;
         this.givenName = givenName;
         this.sureName = sureName;
         this.timestamp = System.currentTimeMillis();
+    }
+
+    public static UserLogin create(long id, String givenName, String sureName) {
+
+        return new UserLogin(id, givenName, sureName);
     }
 
     public long getId() {

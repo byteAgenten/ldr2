@@ -14,7 +14,7 @@ public class ExceptionLog {
 
     private String message;
 
-    public ExceptionLog(Throwable throwable) {
+    public ExceptionLog(Throwable throwable, String message) {
 
         this.exception = throwable;
 
@@ -23,11 +23,12 @@ public class ExceptionLog {
         this.exception.printStackTrace(printWriter);
         this.stackTrace = writer.getBuffer().toString();
 
-        this.message = this.exception.getMessage() != null ? this.exception.getMessage() : this.exception.toString();
+        this.message = message != null ? message : this.exception.getMessage() != null ? this.exception.getMessage() : this.exception.toString();
     }
 
-    public Throwable getException() {
-        return exception;
+    public ExceptionLog(Throwable throwable) {
+
+        this(throwable, null);
     }
 
     public String getStackTrace() {

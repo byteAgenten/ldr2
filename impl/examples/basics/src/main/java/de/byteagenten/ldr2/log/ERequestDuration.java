@@ -1,6 +1,7 @@
 package de.byteagenten.ldr2.log;
 
 import de.byteagenten.ldr2.LogEvent;
+import de.byteagenten.ldr2.LogObject;
 
 /**
  * Created by knooma2e on 07.03.2018.

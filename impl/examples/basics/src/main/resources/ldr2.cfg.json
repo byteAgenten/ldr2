@@ -4,6 +4,18 @@
     {
       "class": "de.byteagenten.ldr2.writer.ConsoleOutputLogWriter",
       "name": "console_logger_1"
+    },
+    {
+      "class": "de.byteagenten.ldr2.writer.Elastic6LogWriter",
+      "name": "elastic_logger_1",
+      "config": {
+        "url": "http://localhost:9201",
+        "queue-size": 1000,
+        "bulk-size": 11,
+        "connection-timeout": 15,
+        "read-timeout": 60
+      }
+
     }
   ]
 }

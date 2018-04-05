@@ -45,7 +45,7 @@ public class Log4J2LogWriter implements LogWriter {
     }
 
     @Override
-    public void init(String name, JsonObject configJson) throws WriterException {
+    public void init(String applicationId, String name, JsonObject configJson) throws WriterException {
         this.name = name;
 
         boolean prettyPrinting = true;

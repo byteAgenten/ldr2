@@ -14,7 +14,7 @@ public interface LogWriter {
 
     void dispose();
 
-    void init(String name, JsonObject writerConfigJsonObject) throws WriterException;
+    void init(String applicationId, String name, JsonObject writerConfigJsonObject) throws WriterException;
 
     String getName();
 }

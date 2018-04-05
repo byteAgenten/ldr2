@@ -51,7 +51,7 @@ public class HttpLogWriter implements LogWriter {
     }
 
     @Override
-    public void init(String name, JsonObject configJson) throws WriterException {
+    public void init(String applicationId, String name, JsonObject configJson) throws WriterException {
 
         System.out.println("Initialize " + this.getClass().getName());
         this.name = name.toLowerCase();

@@ -28,7 +28,7 @@ public class ConsoleOutputLogWriter implements LogWriter {
     }
 
     @Override
-    public void init(String name, JsonObject writerConfigJsonObject) throws WriterException {
+    public void init(String applicationId, String name, JsonObject writerConfigJsonObject) throws WriterException {
         this.name = name;
     }
 

@@ -94,12 +94,27 @@ public class Logger {
         return initialized;
     }
 
+    public static synchronized void log(Throwable t, String message, LogEventConfig logConfig) {
+
+        log(new ExceptionLog(t, message), logConfig != null ? logConfig : LogEventConfig.create().setLevel(LogEvent.Level.ERROR));
+    }
+
+    public static synchronized void log(Throwable t, String message) {
+
+        log(t, message, null);
+    }
+
     public static synchronized void log(Object inEvent, LogEventConfig specificLogEventConfig) {
 
         if (!isInitialized())
             throw new IllegalStateException("Logger not initialized. Please call Logger.init() first.");
 
         if (inEvent == null) inEvent = new NullLog();
+
+        if (inEvent instanceof LogEventConfig && specificLogEventConfig == null) {
+            specificLogEventConfig = (LogEventConfig) inEvent;
+            inEvent = null;
+        }
 
         if (inEvent instanceof Class) {
 
@@ -446,7 +461,7 @@ public class Logger {
             }
 
             try {
-                lwr.init(loggerName, writerConfigJsonObject);
+                lwr.init(applicationId, loggerName, writerConfigJsonObject);
             } catch (WriterException e) {
                 //todo: log
                 return;
@@ -455,5 +470,16 @@ public class Logger {
             logWriter.add(lwr);
         });
         initialized = true;
+    }
+
+    public static void dispose() {
+
+        for (LogWriter writer : logWriter) {
+            try {
+                writer.dispose();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
