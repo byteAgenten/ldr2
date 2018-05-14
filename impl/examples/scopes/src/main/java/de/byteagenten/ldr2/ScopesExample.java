@@ -1,11 +1,8 @@
 package de.byteagenten.ldr2;
 
 import de.byteagenten.ldr2.log.*;
-import de.byteagenten.ldr2.writer.ConsoleOutputLogWriter;
-import de.byteagenten.ldr2.writer.ElasticsearchLogWriter;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Hello world!
